@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="how-WT-hIT">
+            <objects>
+                <viewController storyboardIdentifier="LoginVC" id="AQI-D1-V3A" customClass="LoginViewController" customModule="ChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Gpk-w4-5uk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="メールアドレス" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nJK-ho-Z3k">
+                                <rect key="frame" x="69" y="429" width="276" height="38"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="nJK-ho-Z3k" secondAttribute="height" multiplier="125:17" id="DeL-D0-xXy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpp-DE-c3T">
+                                <rect key="frame" x="147" y="269" width="120" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="XB5-5r-PtB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="50"/>
+                                <color key="textColor" red="0.015686274509803921" green="0.72549019607843135" blue="0.0078431372549019607" alpha="0.84705882352941175" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="パスワード" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hPG-Yx-uua">
+                                <rect key="frame" x="69" y="482" width="276" height="37.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="hPG-Yx-uua" secondAttribute="height" multiplier="125:17" id="m9G-hw-9rh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTn-nM-qMF">
+                                <rect key="frame" x="149.5" y="783" width="115" height="29"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                <state key="normal" title="新規登録はこちら">
+                                    <color key="titleColor" systemColor="systemGray2Color"/>
+                                </state>
+                                <connections>
+                                    <action selector="SignUpChangeButtonAction:" destination="AQI-D1-V3A" eventType="touchUpInside" id="qSF-gD-kh8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-4j-9j7">
+                                <rect key="frame" x="69" y="534.5" width="276" height="44"/>
+                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="0SQ-4j-9j7" secondAttribute="height" multiplier="25:4" id="Oko-ft-Z6q"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <state key="normal" title="ログイン">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="loginButtonAction:" destination="AQI-D1-V3A" eventType="touchUpInside" id="Mf6-C2-CI2"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="v3b-Da-kZW"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstItem="nJK-ho-Z3k" firstAttribute="centerY" secondItem="Gpk-w4-5uk" secondAttribute="centerY" id="3Vc-DL-Mal"/>
+                            <constraint firstItem="hPG-Yx-uua" firstAttribute="top" secondItem="nJK-ho-Z3k" secondAttribute="bottom" constant="15" id="4jV-l6-bFv"/>
+                            <constraint firstItem="hPG-Yx-uua" firstAttribute="width" secondItem="Gpk-w4-5uk" secondAttribute="width" multiplier="0.666667" id="Cze-v9-4Kr"/>
+                            <constraint firstItem="nJK-ho-Z3k" firstAttribute="centerX" secondItem="Gpk-w4-5uk" secondAttribute="centerX" id="Dlm-PD-RmN"/>
+                            <constraint firstItem="0SQ-4j-9j7" firstAttribute="width" secondItem="Gpk-w4-5uk" secondAttribute="width" multiplier="0.666667" id="Mg4-yt-26R"/>
+                            <constraint firstItem="nJK-ho-Z3k" firstAttribute="width" secondItem="Gpk-w4-5uk" secondAttribute="width" multiplier="0.666667" id="TZa-Nu-y2G"/>
+                            <constraint firstItem="hPG-Yx-uua" firstAttribute="centerX" secondItem="Gpk-w4-5uk" secondAttribute="centerX" id="VP9-Rt-MOs"/>
+                            <constraint firstItem="0SQ-4j-9j7" firstAttribute="top" secondItem="hPG-Yx-uua" secondAttribute="bottom" constant="15" id="WT6-1b-wJ4"/>
+                            <constraint firstItem="v3b-Da-kZW" firstAttribute="bottom" secondItem="gTn-nM-qMF" secondAttribute="bottom" constant="50" id="ZAg-gm-oRt"/>
+                            <constraint firstItem="0SQ-4j-9j7" firstAttribute="centerX" secondItem="Gpk-w4-5uk" secondAttribute="centerX" id="acz-OL-Me1"/>
+                            <constraint firstItem="lpp-DE-c3T" firstAttribute="centerX" secondItem="Gpk-w4-5uk" secondAttribute="centerX" id="fCv-Fb-v3J"/>
+                            <constraint firstItem="gTn-nM-qMF" firstAttribute="centerX" secondItem="Gpk-w4-5uk" secondAttribute="centerX" id="htU-wj-617"/>
+                            <constraint firstItem="nJK-ho-Z3k" firstAttribute="top" secondItem="lpp-DE-c3T" secondAttribute="bottom" constant="100" id="wwS-59-DnB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="loginButton" destination="0SQ-4j-9j7" id="eay-m9-6GX"/>
+                        <outlet property="loginMailTextField" destination="nJK-ho-Z3k" id="n0H-yr-sYm"/>
+                        <outlet property="loginPassTextField" destination="hPG-Yx-uua" id="jGq-Kw-3uM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I8k-rh-rVI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="308" y="186.65667166416793"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
