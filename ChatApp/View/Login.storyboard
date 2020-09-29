@@ -53,7 +53,7 @@
                                     <action selector="SignUpChangeButtonAction:" destination="AQI-D1-V3A" eventType="touchUpInside" id="qSF-gD-kh8"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-4j-9j7">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0SQ-4j-9j7">
                                 <rect key="frame" x="69" y="534.5" width="276" height="44"/>
                                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                                 <constraints>

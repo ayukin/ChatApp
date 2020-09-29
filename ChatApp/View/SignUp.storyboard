@@ -43,7 +43,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ad3-HN-ktH">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ad3-HN-ktH">
                                 <rect key="frame" x="69" y="587" width="276" height="44"/>
                                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                                 <constraints>
@@ -78,6 +78,9 @@
                                 <state key="normal" title="プロフィール画像">
                                     <color key="titleColor" systemColor="systemGray2Color"/>
                                 </state>
+                                <connections>
+                                    <action selector="profileImageButtonAction:" destination="ad6-by-itp" eventType="touchUpInside" id="PSi-jd-5oy"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="4u5-Qg-vDF"/>
@@ -102,16 +105,16 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="profileImageButton" destination="yGv-Kr-8Q2" id="b3a-9X-gI2"/>
                         <outlet property="signUpButton" destination="Ad3-HN-ktH" id="Igs-gV-Kyz"/>
                         <outlet property="signUpMailTextField" destination="dsD-pn-14N" id="6V1-FP-bwm"/>
                         <outlet property="signUpPassTextField" destination="ZTY-fx-KgT" id="H7g-FL-KiL"/>
                         <outlet property="signUpUserNameTextField" destination="CWQ-dO-ytj" id="Eul-aX-DvR"/>
-                        <outlet property="userImage" destination="yGv-Kr-8Q2" id="uoE-g9-LLc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mq7-dm-33g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="511" y="-6"/>
+            <point key="canvasLocation" x="545" y="-2"/>
         </scene>
     </scenes>
     <resources>

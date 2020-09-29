@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -237,7 +237,6 @@
 				BC50F77C29B7A64A29976FEE /* Pods-ChatAppTests.debug.xcconfig */,
 				60D80B5A7470A614F95DD458 /* Pods-ChatAppTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
