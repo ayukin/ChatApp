@@ -105,11 +105,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emailTextField" destination="dsD-pn-14N" id="iwk-9w-zjA"/>
+                        <outlet property="passwordTextField" destination="ZTY-fx-KgT" id="n6E-4w-18e"/>
                         <outlet property="profileImageButton" destination="yGv-Kr-8Q2" id="b3a-9X-gI2"/>
                         <outlet property="signUpButton" destination="Ad3-HN-ktH" id="Igs-gV-Kyz"/>
-                        <outlet property="signUpMailTextField" destination="dsD-pn-14N" id="6V1-FP-bwm"/>
-                        <outlet property="signUpPassTextField" destination="ZTY-fx-KgT" id="H7g-FL-KiL"/>
-                        <outlet property="signUpUserNameTextField" destination="CWQ-dO-ytj" id="Eul-aX-DvR"/>
+                        <outlet property="userNameTextField" destination="CWQ-dO-ytj" id="hBw-n6-gFs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mq7-dm-33g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

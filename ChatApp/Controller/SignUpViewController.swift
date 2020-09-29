@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import Firebase
 import IQKeyboardManagerSwift
 
 class SignUpViewController: UIViewController {
     
     @IBOutlet weak var profileImageButton: UIButton!
-    @IBOutlet weak var signUpMailTextField: UITextField!
-    @IBOutlet weak var signUpPassTextField: UITextField!
-    @IBOutlet weak var signUpUserNameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
 
     override func viewDidLoad() {
@@ -21,9 +22,9 @@ class SignUpViewController: UIViewController {
 
         IQKeyboardManager.shared.enable = true
         
-        signUpMailTextField.delegate = self
-        signUpPassTextField.delegate = self
-        signUpUserNameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        userNameTextField.delegate = self
         
         signUpButton.layer.cornerRadius = 3
         signUpButton.isEnabled = false
@@ -45,12 +46,28 @@ class SignUpViewController: UIViewController {
     
     // 新規登録処理
     @IBAction func signUpButtonAction(_ sender: Any) {
-        
+        handleAuthToFirebase()
     }
     
     // loginViewControllerへ画面遷移
     @IBAction func loginChangeButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func handleAuthToFirebase() {
+        guard let email = emailTextField.text else { return }
+        guard let password = passwordTextField.text else { return }
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
+            if let err = err {
+                print("認証情報の保存に失敗しました。\(err)")
+                return
+            }
+            
+            print("認証情報の保存に成功しました。")
+            
+        }
+        
     }
     
 }
@@ -72,11 +89,11 @@ extension SignUpViewController: UITextFieldDelegate {
     // textFieldでテキスト選択が変更された時に呼ばれるメソッド
     func textFieldDidChangeSelection(_ textField: UITextField) {
         // textFieldが空かどうかの判別するための変数(Bool型)で定義
-        let mailIsEmpty = signUpMailTextField.text?.isEmpty ?? true
-        let passIsEmpty = signUpPassTextField.text?.isEmpty ?? true
-        let userNameIsEmpty = signUpUserNameTextField.text?.isEmpty ?? true
+        let emailIsEmpty = emailTextField.text?.isEmpty ?? true
+        let passwordIsEmpty = passwordTextField.text?.isEmpty ?? true
+        let userNameIsEmpty = userNameTextField.text?.isEmpty ?? true
         // 全てのtextFieldが記入済みの場合の処理
-        if mailIsEmpty || passIsEmpty || userNameIsEmpty {
+        if emailIsEmpty || passwordIsEmpty || userNameIsEmpty {
             signUpButton.isEnabled = false
             signUpButton.backgroundColor = UIColor.systemGray2
         } else {
