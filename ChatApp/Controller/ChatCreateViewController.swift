@@ -28,8 +28,7 @@ class ChatCreateViewController: UIViewController {
         self.navigationItem.setLeftBarButton(closeBtn, animated: true)
         
         // ナビゲーションバー右上のボタン作成
-        let createBtn = UIBarButtonItem(title: "作成", style: .plain, target: self, action: #selector(self.createProject(sender:))
-        )
+        let createBtn = UIBarButtonItem(title: "作成", style: .plain, target: self, action: #selector(self.createProject(sender:)))
         self.navigationItem.setRightBarButton(createBtn, animated: true)
     
     }

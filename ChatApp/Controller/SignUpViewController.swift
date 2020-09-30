@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorage
 import IQKeyboardManagerSwift
 
 class SignUpViewController: UIViewController {
@@ -16,7 +17,10 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
-
+    
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,6 +40,12 @@ class SignUpViewController: UIViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // NavigationBarを非表示
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     // プロフィール画像の選択（フォトライブラリーへ遷移）
     @IBAction func profileImageButtonAction(_ sender: Any) {
         let imagePickerController = UIImagePickerController()
@@ -46,42 +56,107 @@ class SignUpViewController: UIViewController {
     
     // 新規登録処理
     @IBAction func signUpButtonAction(_ sender: Any) {
-        handleAuthToFirebase()
-    }
-    
-    // loginViewControllerへ画面遷移
-    @IBAction func loginChangeButtonAction(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    // Firebase関連処理
-    private func handleAuthToFirebase() {
+        // アクティビティインディケータのアニメーション開始
+        self.activityIndicatorStartAction()
+        
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
+        
         // Authenticationへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
                 print("認証情報の保存に失敗しました。\(err)")
+                // アクティビティインディケータのアニメーション停止
+                self.activityIndicatorStopAction()
                 return
             }
             print("認証情報の保存に成功しました。")
-            
-            guard let uid = Auth.auth().currentUser?.uid else { return } // ユーザーUIDを取得
-            guard let userName = self.userNameTextField.text else { return }
-            
-            // 保存内容を定義する（辞書型）
-            let docDate = ["email": email, "name": userName, "createdAt": Timestamp()] as [String : Any]
-            
-            Firestore.firestore().collection("users").document(uid).setData(docDate) { (err) in
-                if let err = err {
-                    print("Firestoreへの保存に失敗しました。\(err)")
-                    return
-                }
-                print("Firestoreへの保存に成功しました。")
-            }
-            
+            // プロフィール画像をFirestorageへ保存
+            self.createImageToFirestorage()
         }
         
+    }
+    
+    // loginViewControllerへ画面遷移
+    @IBAction func loginChangeButtonAction(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    // プロフィール画像をFirestorageへ保存する処理
+    private func createImageToFirestorage() {
+        // プロフィール画像が設定されている場合の処理
+        if self.profileImageButton.imageView?.image != nil {
+            let image = self.profileImageButton.imageView?.image
+            let uploadImage = image!.jpegData(compressionQuality: 0.5)
+            let fileName = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
+            // Firestorageへ保存
+            storageRef.putData(uploadImage!, metadata: nil) { (metadate, err) in
+                if let err = err {
+                    print("Firestorageへの保存に失敗しました。\(err)")
+                    // アクティビティインディケータのアニメーション停止
+                    self.activityIndicatorStopAction()
+                    return
+                }
+                print("Firestorageへの保存に成功しました。")
+                storageRef.downloadURL { (url, err) in
+                    if let err = err {
+                        print("Firestorageからダウンロードに失敗しました。\(err)")
+                        // アクティビティインディケータのアニメーション停止
+                        self.activityIndicatorStopAction()
+                        return
+                    }
+                    print("Firestorageからダウンロードに成功しました。")
+                    guard let urlString = url?.absoluteString else { return }
+                    // User情報をFirestoreへ保存
+                    self.createUserToFirestore(profileImageUrl: urlString)
+                }
+                
+            }
+            
+        } else {
+            print("プロフィール画像が設定されていないため、デフォルト画像になります。")
+            // User情報をFirestoreへ保存
+            self.createUserToFirestore(profileImageUrl: "hogehoge")
+        }
+        
+    }
+    
+    // User情報をFirestoreへ保存する処理
+    private func createUserToFirestore(profileImageUrl: String) {
+        guard let email = Auth.auth().currentUser?.email else { return }
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let userName = self.userNameTextField.text else { return }
+        
+        // 保存内容を定義する（辞書型）
+        let docDate = ["email": email, "name": userName, "profileImageUrl": profileImageUrl, "createdAt": Timestamp()] as [String : Any]
+        // Firestoreへ保存
+        Firestore.firestore().collection("users").document(uid).setData(docDate) { (err) in
+            if let err = err {
+                print("Firestoreへの保存に失敗しました。\(err)")
+                // アクティビティインディケータのアニメーション停止
+                self.activityIndicatorStopAction()
+                return
+            }
+            print("Firestoreへの保存に成功しました。")
+            // アクティビティインディケータのアニメーション停止
+            self.activityIndicatorStopAction()
+        }
+        
+    }
+    
+    // アクティビティインディケータのアニメーションを開始するメソッド
+    func activityIndicatorStartAction() {
+        loadingView.isHidden = false
+        activityIndicatorView?.isHidden = false
+        activityIndicatorView.startAnimating()
+    }
+    
+    // アクティビティインディケータのアニメーションを停止するメソッド
+    func activityIndicatorStopAction() {
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView?.hidesWhenStopped = true
+        loadingView.isHidden = true
     }
     
 }

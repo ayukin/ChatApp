@@ -26,6 +26,12 @@ class LoginViewController: UIViewController {
         loginButton.layer.cornerRadius = 3
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // NavigationBarを非表示
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+
     // ログイン処理
     @IBAction func loginButtonAction(_ sender: Any) {
         
@@ -35,7 +41,8 @@ class LoginViewController: UIViewController {
     @IBAction func SignUpChangeButtonAction(_ sender: Any) {
         let storyboard: UIStoryboard = UIStoryboard(name: "SignUp", bundle: nil)
         let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
-        self.present(signUpVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(signUpVC, animated: true)
+//        self.present(signUpVC, animated: true, completion: nil)
     }
     
 }
