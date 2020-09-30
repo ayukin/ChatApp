@@ -15,7 +15,7 @@ class ChatCreateViewController: UIViewController {
         super.viewDidLoad()
         
         // ナビゲーションバーのカスタマイズ
-        self.navigationController?.navigationBar.barTintColor = UIColor(red: 32/255, green: 43/255, blue: 67/255, alpha: 1)
+        self.navigationController?.navigationBar.barTintColor = UIColor.lineGray
         self.navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white
         ]

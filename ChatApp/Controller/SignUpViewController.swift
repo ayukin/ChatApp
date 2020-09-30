@@ -54,17 +54,31 @@ class SignUpViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // Firebase関連処理
     private func handleAuthToFirebase() {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
-        
+        // Authenticationへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
                 print("認証情報の保存に失敗しました。\(err)")
                 return
             }
-            
             print("認証情報の保存に成功しました。")
+            
+            guard let uid = Auth.auth().currentUser?.uid else { return } // ユーザーUIDを取得
+            guard let userName = self.userNameTextField.text else { return }
+            
+            // 保存内容を定義する（辞書型）
+            let docDate = ["email": email, "name": userName, "createdAt": Timestamp()] as [String : Any]
+            
+            Firestore.firestore().collection("users").document(uid).setData(docDate) { (err) in
+                if let err = err {
+                    print("Firestoreへの保存に失敗しました。\(err)")
+                    return
+                }
+                print("Firestoreへの保存に成功しました。")
+            }
             
         }
         
@@ -98,7 +112,7 @@ extension SignUpViewController: UITextFieldDelegate {
             signUpButton.backgroundColor = UIColor.systemGray2
         } else {
             signUpButton.isEnabled = true
-            signUpButton.backgroundColor = UIColor(red: 4/255, green: 185/255, blue: 2/255, alpha: 1)
+            signUpButton.backgroundColor = UIColor.lineGreen
         }
     }
     
