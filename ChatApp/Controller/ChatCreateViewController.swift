@@ -56,7 +56,7 @@ extension ChatCreateViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.partnerImage.image = UIImage(named: "partnerImage")
-        cell.partnerNameLabel.text = "西岡鮎季"
+        cell.partnerNameLabel.text = "あいうえお"
         
         return cell
     }
