@@ -37,12 +37,6 @@ class SignUpViewController: UIViewController {
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // NavigationBarを非表示
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
     // プロフィール画像の選択（フォトライブラリーへ遷移）
     @IBAction func profileImageButtonAction(_ sender: Any) {
         let imagePickerController = UIImagePickerController()
@@ -80,7 +74,7 @@ class SignUpViewController: UIViewController {
     
     // loginViewControllerへ画面遷移
     @IBAction func loginChangeButtonAction(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // プロフィール画像をFirebaseStorageへ保存する処理

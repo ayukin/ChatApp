@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatListViewController: UIViewController {
     
@@ -23,12 +24,26 @@ class ChatListViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // NavigationBarを表示
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkLoggedInUser()
     }
-
+    
+    // ユーザーが現在存在するのかはチェック
+    private func checkLoggedInUser() {
+        if Auth.auth().currentUser?.uid == nil {
+            presentToLoginVC()
+        }
+    }
+    
+    // LoginViewControllerへ画面遷移
+    private func presentToLoginVC() {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
+        let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as! LoginViewController
+        let nav = UINavigationController(rootViewController: loginVC)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
+    }
     
     // ChatCreateViewControllerへ画面遷移
     @IBAction func createButtonAction(_ sender: Any) {
@@ -41,7 +56,13 @@ class ChatListViewController: UIViewController {
     
     // InfoViewControllerへ画面遷移
     @IBAction func infoButtonAction(_ sender: Any) {
-        
+        // ログアウト（仮）
+        do {
+            try Auth.auth().signOut()
+            presentToLoginVC()
+        } catch (let err) {
+            print("ログアウトに失敗しました。\(err)")
+        }
     }
 
 }

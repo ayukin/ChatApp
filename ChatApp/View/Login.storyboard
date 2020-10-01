@@ -41,7 +41,7 @@
                                     <constraint firstAttribute="width" secondItem="hPG-Yx-uua" secondAttribute="height" multiplier="125:17" id="m9G-hw-9rh"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gTn-nM-qMF">
                                 <rect key="frame" x="149.5" y="783" width="115" height="29"/>
@@ -88,9 +88,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="cdr-lp-1be"/>
                     <connections>
+                        <outlet property="emailTextField" destination="nJK-ho-Z3k" id="Yoi-EG-wRy"/>
                         <outlet property="loginButton" destination="0SQ-4j-9j7" id="eay-m9-6GX"/>
-                        <outlet property="loginMailTextField" destination="nJK-ho-Z3k" id="n0H-yr-sYm"/>
-                        <outlet property="loginPassTextField" destination="hPG-Yx-uua" id="jGq-Kw-3uM"/>
+                        <outlet property="passwordTextField" destination="hPG-Yx-uua" id="zLT-Lo-03w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="I8k-rh-rVI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
