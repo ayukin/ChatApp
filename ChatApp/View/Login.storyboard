@@ -8,21 +8,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="pdu-qA-Ahf">
-            <objects>
-                <navigationController navigationBarHidden="YES" id="uUp-oE-Cno" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="u1S-Io-2qA">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="AQI-D1-V3A" kind="relationship" relationship="rootViewController" id="tDS-ES-bau"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OCf-rr-W0P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-542" y="186"/>
-        </scene>
         <!--Login View Controller-->
         <scene sceneID="how-WT-hIT">
             <objects>

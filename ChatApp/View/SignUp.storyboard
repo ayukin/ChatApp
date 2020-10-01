@@ -8,21 +8,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="2es-Mt-PGs">
-            <objects>
-                <navigationController navigationBarHidden="YES" id="oGu-wT-PDr" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="4KR-ON-xMg">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="ad6-by-itp" kind="relationship" relationship="rootViewController" id="Wzr-gK-uJE"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="cjL-o8-QYf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-280" y="-2"/>
-        </scene>
         <!--Sign Up View Controller-->
         <scene sceneID="o6n-3e-SBh">
             <objects>
@@ -97,22 +82,6 @@
                                     <action selector="profileImageButtonAction:" destination="ad6-by-itp" eventType="touchUpInside" id="PSi-jd-5oy"/>
                                 </connections>
                             </button>
-                            <view hidden="YES" alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tK2-2R-6zA">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Uy8-Gd-Zgb">
-                                        <rect key="frame" x="197" y="438" width="20" height="20"/>
-                                        <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="Uy8-Gd-Zgb" firstAttribute="leading" secondItem="tK2-2R-6zA" secondAttribute="leading" constant="197" id="4mM-x7-egH"/>
-                                    <constraint firstItem="Uy8-Gd-Zgb" firstAttribute="top" secondItem="tK2-2R-6zA" secondAttribute="top" constant="438" id="Act-es-Odt"/>
-                                    <constraint firstAttribute="bottom" secondItem="Uy8-Gd-Zgb" secondAttribute="bottom" constant="438" id="fKI-u3-yn8"/>
-                                    <constraint firstAttribute="trailing" secondItem="Uy8-Gd-Zgb" secondAttribute="trailing" constant="197" id="vvA-d5-xrC"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="4u5-Qg-vDF"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -120,13 +89,9 @@
                             <constraint firstItem="Ad3-HN-ktH" firstAttribute="centerX" secondItem="YQf-FZ-0PS" secondAttribute="centerX" id="1vY-Ca-eFT"/>
                             <constraint firstItem="kJw-3R-FQ9" firstAttribute="centerX" secondItem="YQf-FZ-0PS" secondAttribute="centerX" id="3Df-ps-Mhp"/>
                             <constraint firstItem="dsD-pn-14N" firstAttribute="top" secondItem="yGv-Kr-8Q2" secondAttribute="bottom" constant="75" id="5Ng-T9-8Ew"/>
-                            <constraint firstItem="tK2-2R-6zA" firstAttribute="leading" secondItem="4u5-Qg-vDF" secondAttribute="leading" id="AQQ-u4-5GP"/>
                             <constraint firstItem="dsD-pn-14N" firstAttribute="centerY" secondItem="YQf-FZ-0PS" secondAttribute="centerY" id="CsF-iB-Gmt"/>
-                            <constraint firstItem="tK2-2R-6zA" firstAttribute="trailing" secondItem="4u5-Qg-vDF" secondAttribute="trailing" id="Kpc-dM-E8w"/>
                             <constraint firstItem="Ad3-HN-ktH" firstAttribute="top" secondItem="CWQ-dO-ytj" secondAttribute="bottom" constant="15" id="L6i-7Q-DFI"/>
                             <constraint firstItem="4u5-Qg-vDF" firstAttribute="bottom" secondItem="kJw-3R-FQ9" secondAttribute="bottom" constant="50" id="ONK-IV-1T8"/>
-                            <constraint firstAttribute="bottom" secondItem="tK2-2R-6zA" secondAttribute="bottom" id="PeO-1U-cTV"/>
-                            <constraint firstItem="tK2-2R-6zA" firstAttribute="top" secondItem="YQf-FZ-0PS" secondAttribute="top" id="V3W-3s-Sky"/>
                             <constraint firstItem="CWQ-dO-ytj" firstAttribute="width" secondItem="YQf-FZ-0PS" secondAttribute="width" multiplier="0.666667" id="WFb-2O-Nxc"/>
                             <constraint firstItem="dsD-pn-14N" firstAttribute="centerX" secondItem="YQf-FZ-0PS" secondAttribute="centerX" id="XCB-TV-Vut"/>
                             <constraint firstItem="Ad3-HN-ktH" firstAttribute="width" secondItem="YQf-FZ-0PS" secondAttribute="width" multiplier="0.666667" id="a9q-ar-aKP"/>
@@ -141,9 +106,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="PjM-3F-YLx"/>
                     <connections>
-                        <outlet property="activityIndicatorView" destination="Uy8-Gd-Zgb" id="mhd-cU-Qtg"/>
                         <outlet property="emailTextField" destination="dsD-pn-14N" id="iwk-9w-zjA"/>
-                        <outlet property="loadingView" destination="tK2-2R-6zA" id="mxV-S8-KZB"/>
                         <outlet property="passwordTextField" destination="ZTY-fx-KgT" id="n6E-4w-18e"/>
                         <outlet property="profileImageButton" destination="yGv-Kr-8Q2" id="b3a-9X-gI2"/>
                         <outlet property="signUpButton" destination="Ad3-HN-ktH" id="Igs-gV-Kyz"/>

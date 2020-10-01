@@ -39,10 +39,10 @@ class LoginViewController: UIViewController {
     
     // SignUpViewControllerへ画面遷移
     @IBAction func SignUpChangeButtonAction(_ sender: Any) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "SignUp", bundle: nil)
+        let storyboard = UIStoryboard(name: "SignUp", bundle: nil)
         let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpVC") as! SignUpViewController
-        self.navigationController?.pushViewController(signUpVC, animated: true)
-//        self.present(signUpVC, animated: true, completion: nil)
+        signUpVC.modalTransitionStyle = .flipHorizontal
+        self.present(signUpVC, animated: true, completion: nil)
     }
     
 }

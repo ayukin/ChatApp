@@ -18,9 +18,6 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     
-    @IBOutlet weak var loadingView: UIView!
-    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -57,21 +54,25 @@ class SignUpViewController: UIViewController {
     // 新規登録処理
     @IBAction func signUpButtonAction(_ sender: Any) {
         // アクティビティインディケータのアニメーション開始
-        self.activityIndicatorStartAction()
+        startIndicator()
         
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
-        // Authenticationへ保存
+        // FirebaseAuthへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
                 print("認証情報の保存に失敗しました。\(err)")
                 // アクティビティインディケータのアニメーション停止
-                self.activityIndicatorStopAction()
+                self.dismissIndicator()
+                // アラートの表示
+                let errorAlert = UIAlertController.errorAlert(message: "認証情報の保存に失敗しました。")
+                self.present(errorAlert, animated: true, completion: nil)
+                
                 return
             }
             print("認証情報の保存に成功しました。")
-            // プロフィール画像をFirestorageへ保存
+            // プロフィール画像をFirebaseStorageへ保存
             self.createImageToFirestorage()
         }
         
@@ -79,10 +80,10 @@ class SignUpViewController: UIViewController {
     
     // loginViewControllerへ画面遷移
     @IBAction func loginChangeButtonAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    // プロフィール画像をFirestorageへ保存する処理
+    // プロフィール画像をFirebaseStorageへ保存する処理
     private func createImageToFirestorage() {
         // プロフィール画像が設定されている場合の処理
         if self.profileImageButton.imageView?.image != nil {
@@ -90,12 +91,16 @@ class SignUpViewController: UIViewController {
             let uploadImage = image!.jpegData(compressionQuality: 0.5)
             let fileName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
-            // Firestorageへ保存
+            // FirebaseStorageへ保存
             storageRef.putData(uploadImage!, metadata: nil) { (metadate, err) in
                 if let err = err {
                     print("Firestorageへの保存に失敗しました。\(err)")
                     // アクティビティインディケータのアニメーション停止
-                    self.activityIndicatorStopAction()
+                    self.dismissIndicator()
+                    // アラートの表示
+                    let errorAlert = UIAlertController.errorAlert(message: "画像の保存に失敗しました。")
+                    self.present(errorAlert, animated: true, completion: nil)
+                    
                     return
                 }
                 print("Firestorageへの保存に成功しました。")
@@ -103,12 +108,16 @@ class SignUpViewController: UIViewController {
                     if let err = err {
                         print("Firestorageからダウンロードに失敗しました。\(err)")
                         // アクティビティインディケータのアニメーション停止
-                        self.activityIndicatorStopAction()
+                        self.dismissIndicator()
+                        // アラートの表示
+                        let errorAlert = UIAlertController.errorAlert(message: "画像のダウンロードに失敗しました。")
+                        self.present(errorAlert, animated: true, completion: nil)
+                        
                         return
                     }
                     print("Firestorageからダウンロードに成功しました。")
                     guard let urlString = url?.absoluteString else { return }
-                    // User情報をFirestoreへ保存
+                    // User情報をFirebaseFirestoreへ保存
                     self.createUserToFirestore(profileImageUrl: urlString)
                 }
                 
@@ -116,47 +125,47 @@ class SignUpViewController: UIViewController {
             
         } else {
             print("プロフィール画像が設定されていないため、デフォルト画像になります。")
-            // User情報をFirestoreへ保存
-            self.createUserToFirestore(profileImageUrl: "hogehoge")
+            // User情報をFirebaseFirestoreへ保存
+            self.createUserToFirestore(profileImageUrl: "blankimage")
         }
         
     }
     
-    // User情報をFirestoreへ保存する処理
+    // User情報をFirebaseFirestoreへ保存する処理
     private func createUserToFirestore(profileImageUrl: String) {
+        
         guard let email = Auth.auth().currentUser?.email else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let userName = self.userNameTextField.text else { return }
         
         // 保存内容を定義する（辞書型）
         let docDate = ["email": email, "name": userName, "profileImageUrl": profileImageUrl, "createdAt": Timestamp()] as [String : Any]
-        // Firestoreへ保存
+        // FirebaseFirestoreへ保存
         Firestore.firestore().collection("users").document(uid).setData(docDate) { (err) in
             if let err = err {
                 print("Firestoreへの保存に失敗しました。\(err)")
                 // アクティビティインディケータのアニメーション停止
-                self.activityIndicatorStopAction()
+                self.dismissIndicator()
+                // アラートの表示
+                let errorAlert = UIAlertController.errorAlert(message: "ユーザー情報の保存に失敗しました。")
+                self.present(errorAlert, animated: true, completion: nil)
+                
                 return
             }
             print("Firestoreへの保存に成功しました。")
+            
             // アクティビティインディケータのアニメーション停止
-            self.activityIndicatorStopAction()
+            self.dismissIndicator()
+            
+            // ChatListViewControllerへ画面遷移
+            let storyboard = UIStoryboard(name: "ChatList", bundle: nil)
+            let chatListVC = storyboard.instantiateViewController(withIdentifier: "ChatListVC") as! ChatListViewController
+            let nav = UINavigationController(rootViewController: chatListVC)
+            nav.modalPresentationStyle = .fullScreen
+            nav.modalTransitionStyle = .crossDissolve
+            self.present(nav, animated: true, completion: nil)
         }
         
-    }
-    
-    // アクティビティインディケータのアニメーションを開始するメソッド
-    func activityIndicatorStartAction() {
-        loadingView.isHidden = false
-        activityIndicatorView?.isHidden = false
-        activityIndicatorView.startAnimating()
-    }
-    
-    // アクティビティインディケータのアニメーションを停止するメソッド
-    func activityIndicatorStopAction() {
-        activityIndicatorView.stopAnimating()
-        activityIndicatorView?.hidesWhenStopped = true
-        loadingView.isHidden = true
     }
     
 }

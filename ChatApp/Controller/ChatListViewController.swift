@@ -23,6 +23,13 @@ class ChatListViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // NavigationBarを表示
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
+    
     // ChatCreateViewControllerへ画面遷移
     @IBAction func createButtonAction(_ sender: Any) {
         let storyboard: UIStoryboard = UIStoryboard(name: "ChatCreate", bundle: nil)
@@ -34,9 +41,7 @@ class ChatListViewController: UIViewController {
     
     // InfoViewControllerへ画面遷移
     @IBAction func infoButtonAction(_ sender: Any) {
-//        let storyboard: UIStoryboard = UIStoryboard(name: "", bundle: nil)
-//        let chatRoomVC = storyboard.instantiateViewController(withIdentifier: "ChatRoomVC") as! ChatRoomViewController
-//        self.navigationController?.pushViewController(chatRoomVC, animated: true)
+        
     }
 
 }
@@ -52,7 +57,7 @@ extension ChatListViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.partnerImage.image = UIImage(named: "partnerImage")
-        cell.partnerNameLabel.text = "西岡鮎季"
+        cell.partnerNameLabel.text = "あいうえお"
         cell.messageLabel.text = "あいうえおかきくけこさしすせそ"
         cell.dateLabel.text = "12:12"
         
@@ -67,7 +72,7 @@ extension ChatListViewController: UITableViewDelegate {
         // セルの選択を解除
         tableView.deselectRow(at: indexPath, animated: true)
         // ChatRoomViewControllerへ画面遷移
-        let storyboard: UIStoryboard = UIStoryboard(name: "ChatRoom", bundle: nil)
+        let storyboard = UIStoryboard(name: "ChatRoom", bundle: nil)
         let chatRoomVC = storyboard.instantiateViewController(withIdentifier: "ChatRoomVC") as! ChatRoomViewController
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
     }
