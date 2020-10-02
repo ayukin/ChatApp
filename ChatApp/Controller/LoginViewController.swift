@@ -23,14 +23,21 @@ class LoginViewController: UIViewController {
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
-        loginButton.layer.masksToBounds = true
-        loginButton.layer.cornerRadius = 3
+        // 画面UIについての処理
+        setupUI()
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // ナビゲーションバーを非表示
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    // 画面UIについての処理
+    func setupUI() {
+        loginButton.layer.masksToBounds = true
+        loginButton.layer.cornerRadius = 3
     }
     
     // ログイン処理

@@ -27,14 +27,19 @@ class SignUpViewController: UIViewController {
         passwordTextField.delegate = self
         userNameTextField.delegate = self
         
+        // 画面UIについての処理
+        setupUI()
+        
+    }
+    
+    // 画面UIについての処理
+    func setupUI() {
         signUpButton.layer.cornerRadius = 3
         signUpButton.isEnabled = false
-        
         profileImageButton.layer.masksToBounds = true
         profileImageButton.layer.cornerRadius = 75
         profileImageButton.layer.borderColor = UIColor.lightGray.cgColor
         profileImageButton.layer.borderWidth  = 0.1
-
     }
     
     // プロフィール画像の選択（フォトライブラリーへ遷移）
