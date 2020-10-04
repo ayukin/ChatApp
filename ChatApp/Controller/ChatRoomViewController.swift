@@ -6,19 +6,26 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatRoomViewController: UIViewController {
     
     @IBOutlet weak var ChatRoomTableView: UITableView!
-    @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var chatTextField: UITextField!
-    @IBOutlet weak var sendButton: UIButton!
+    
+    private var messages = [String]()
+    
+    private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
+        let view = ChatInputAccessoryView()
+        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 60)
+        view.delegate = self
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // ナビゲーションバーのカスタマイズ
-        self.navigationController?.navigationBar.barTintColor = UIColor.lineGray
+        self.navigationController?.navigationBar.barTintColor = UIColor(named: "lineGray")
         self.navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white
         ]
@@ -30,15 +37,18 @@ class ChatRoomViewController: UIViewController {
         
     }
     
-//    override var canBecomeFirstResponder: Bool {
-//        return true
-//    }
-//
-//    override var inputAccessoryView: UIView? {
-//        // 通常はテキストフィールドのプロパティに設定しますが、画面を表示している間は常に表示したいため、ViewControllerのプロパティに設定します
-//        return bottomView
-//    }
+    // chatInputAccessoryViewをセット
+    override var inputAccessoryView: UIView? {
+        get {
+            return chatInputAccessoryView
+        }
+    }
     
+    // サブクラスはこのメソッドをオーバーライドし、trueを返してファーストレスポンダになることができるようにする必要がある。
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
     // 画面UIについての処理
     func setupUI() {
         
@@ -52,18 +62,13 @@ class ChatRoomViewController: UIViewController {
         ChatRoomTableView.register(UINib(nibName: "MyChatViewCell", bundle: nil), forCellReuseIdentifier: "MyChat")
         ChatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
         
-        chatTextField.layer.masksToBounds = true
-        chatTextField.layer.cornerRadius = 10
-        chatTextField.layer.borderColor = UIColor.lightGray.cgColor
-        chatTextField.layer.borderWidth  = 0.1
-        
     }
     
 }
 
 extension ChatRoomViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,7 +76,7 @@ extension ChatRoomViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.clipsToBounds = true // bound外のものを表示しない
-        cell.updateCell(text: "こんにちは！あゆきです！", date: "2020/12/12", time: "12:12")
+        cell.updateCell(text: messages[indexPath.row], date: "2020/12/12", time: "12:12")
         return cell
         
 //        guard let cell = ChatRoomTableView.dequeueReusableCell(withIdentifier: "YourChat", for: indexPath) as? YourChatViewCell else {
@@ -95,22 +100,32 @@ extension ChatRoomViewController: UITableViewDelegate {
 
 }
 
-extension ChatRoomViewController: UITextFieldDelegate {
-    // 入力開始時の処理
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-    }
-    // textFieldの内容をリアルタイムで反映させる
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        
-    }
-    // リターンキーを押したときキーボードが閉じる
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    // 入力終了時の処理（フォーカスがはずれる）
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.resignFirstResponder()
+//extension ChatRoomViewController: UITextFieldDelegate {
+//    // 入力開始時の処理
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//
+//    }
+//    // textFieldの内容をリアルタイムで反映させる
+//    func textFieldDidChangeSelection(_ textField: UITextField) {
+//
+//    }
+//    // リターンキーを押したときキーボードが閉じる
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
+//    // 入力終了時の処理（フォーカスがはずれる）
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        textField.resignFirstResponder()
+//    }
+//}
+
+extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
+    
+    func chatTextViewSendAction(text: String) {
+        messages.append(text)
+        chatInputAccessoryView.removeText()
+        // ChatRoomTableViewを更新
+        self.ChatRoomTableView.reloadData()
     }
 }

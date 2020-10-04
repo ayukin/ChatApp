@@ -27,7 +27,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Odc-Q7-2od">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blankimage" translatesAutoresizingMaskIntoConstraints="NO" id="Odc-Q7-2od">
                                                     <rect key="frame" x="20" y="7.5" width="55" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="55" id="a1X-8x-Bwy"/>
@@ -51,8 +51,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="partnerImage" destination="Odc-Q7-2od" id="tZe-f4-s9n"/>
-                                            <outlet property="partnerNameLabel" destination="XuW-5C-4w6" id="i6q-6h-IJn"/>
+                                            <outlet property="partnerImage" destination="Odc-Q7-2od" id="bYk-WY-hdK"/>
+                                            <outlet property="partnerNameLabel" destination="XuW-5C-4w6" id="oMw-aP-eDo"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -78,10 +78,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IaO-EC-WQA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="705.79710144927537" y="205.58035714285714"/>
+            <point key="canvasLocation" x="580" y="147"/>
         </scene>
     </scenes>
     <resources>
+        <image name="blankimage" width="1280" height="1280"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

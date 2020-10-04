@@ -55,8 +55,12 @@ class SignUpViewController: UIViewController {
         // アクティビティインディケータのアニメーション開始
         startIndicator()
         
-        guard let email = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text
+        else { return }
+        
+//        guard let email = emailTextField.text else { return }
+//        guard let password = passwordTextField.text else { return }
         
         // FirebaseAuthへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
@@ -85,9 +89,8 @@ class SignUpViewController: UIViewController {
     // プロフィール画像をFirebaseStorageへ保存する処理
     private func createImageToFirestorage() {
         // プロフィール画像が設定されている場合の処理
-        if self.profileImageButton.imageView?.image != nil {
-            let image = self.profileImageButton.imageView?.image
-            let uploadImage = image!.jpegData(compressionQuality: 0.5)
+        if let image = self.profileImageButton.imageView?.image {
+            let uploadImage = image.jpegData(compressionQuality: 0.5)
             let fileName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
             // FirebaseStorageへ保存
@@ -103,44 +106,53 @@ class SignUpViewController: UIViewController {
                     return
                 }
                 print("Firestorageへの保存に成功しました。")
-                storageRef.downloadURL { (url, err) in
-                    if let err = err {
-                        print("Firestorageからダウンロードに失敗しました。\(err)")
-                        // アクティビティインディケータのアニメーション停止
-                        self.dismissIndicator()
-                        // アラートの表示
-                        let errorAlert = UIAlertController.errorAlert(message: "画像のダウンロードに失敗しました。")
-                        self.present(errorAlert, animated: true, completion: nil)
-                        
-                        return
-                    }
-                    print("Firestorageからダウンロードに成功しました。")
-                    guard let urlString = url?.absoluteString else { return }
-                    // User情報をFirebaseFirestoreへ保存
-                    self.createUserToFirestore(profileImageUrl: urlString)
-                }
+                // User情報をFirebaseFirestoreへ保存
+                self.createUserToFirestore(profileImageName: fileName)
+    
+//                storageRef.downloadURL { (url, err) in
+//                    if let err = err {
+//                        print("Firestorageからダウンロードに失敗しました。\(err)")
+//                        // アクティビティインディケータのアニメーション停止
+//                        self.dismissIndicator()
+//                        // アラートの表示
+//                        let errorAlert = UIAlertController.errorAlert(message: "画像のダウンロードに失敗しました。")
+//                        self.present(errorAlert, animated: true, completion: nil)
+//
+//                        return
+//                    }
+//                    print("Firestorageからダウンロードに成功しました。")
+//                    guard let urlString = url?.absoluteString else { return }
+//                    // User情報をFirebaseFirestoreへ保存
+//                    self.createUserToFirestore(profileImageUrl: urlString)
+//
+//                }
                 
             }
             
         } else {
             print("プロフィール画像が設定されていないため、デフォルト画像になります。")
             // User情報をFirebaseFirestoreへ保存
-            self.createUserToFirestore(profileImageUrl: "blankimage")
+            self.createUserToFirestore(profileImageName: nil)
         }
         
     }
     
     // User情報をFirebaseFirestoreへ保存する処理
-    private func createUserToFirestore(profileImageUrl: String) {
+    private func createUserToFirestore(profileImageName: String?) {
         
-        guard let email = Auth.auth().currentUser?.email else { return }
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        guard let userName = self.userNameTextField.text else { return }
+        guard let email = Auth.auth().currentUser?.email,
+              let uid = Auth.auth().currentUser?.uid,
+              let userName = self.userNameTextField.text
+        else { return }
         
         // 保存内容を定義する（辞書型）
-        let docDate = ["email": email, "name": userName, "profileImageUrl": profileImageUrl, "createdAt": Timestamp()] as [String : Any]
+        let docDate = ["email": email,
+                       "userName": userName,
+                       "profileImageName": profileImageName,
+                       "createdAt": Timestamp()]
+            as [String : Any?]
         // FirebaseFirestoreへ保存
-        Firestore.firestore().collection("users").document(uid).setData(docDate) { (err) in
+        Firestore.firestore().collection("users").document(uid).setData(docDate as [String : Any]) { (err) in
             if let err = err {
                 print("Firestoreへの保存に失敗しました。\(err)")
                 // アクティビティインディケータのアニメーション停止
@@ -195,7 +207,7 @@ extension SignUpViewController: UITextFieldDelegate {
             signUpButton.backgroundColor = UIColor.systemGray2
         } else {
             signUpButton.isEnabled = true
-            signUpButton.backgroundColor = UIColor.lineGreen
+            signUpButton.backgroundColor = UIColor(named: "lineGreen")
         }
     }
     

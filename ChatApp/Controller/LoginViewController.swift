@@ -45,8 +45,12 @@ class LoginViewController: UIViewController {
         // アクティビティインディケータのアニメーション開始
         startIndicator()
         
-        guard let email = emailTextField.text else { return }
-        guard let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text
+        else { return }
+        
+//        guard let email = emailTextField.text else { return }
+//        guard let password = passwordTextField.text else { return }
         
         Auth.auth().signIn(withEmail: email, password: password) { (res, err) in
             if let err = err {
@@ -96,7 +100,7 @@ extension LoginViewController: UITextFieldDelegate {
             loginButton.backgroundColor = UIColor.systemGray2
         } else {
             loginButton.isEnabled = true
-            loginButton.backgroundColor = UIColor.lineGreen
+            loginButton.backgroundColor = UIColor(named: "lineGreen")
         }
     }
     

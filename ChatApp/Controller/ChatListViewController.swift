@@ -12,23 +12,39 @@ class ChatListViewController: UIViewController {
     
     @IBOutlet weak var chatListTableView: UITableView!
     
+    private var emptyView: EmptyView!
+    private var user: User?
+    private var chatRooms = [ChatRoom]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
         // ナビゲーションバーのカスタマイズ
-        self.navigationController?.navigationBar.barTintColor = UIColor.lineGray
+        self.navigationController?.navigationBar.barTintColor = UIColor(named: "lineGray")
         self.navigationController?.navigationBar.titleTextAttributes = [
             .foregroundColor: UIColor.white
         ]
         self.navigationController?.navigationBar.tintColor = UIColor.white
         
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        self.chatListTableView.tableFooterView = UIView()
+        
+//        emptyView = EmptyView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
+//        self.view.addSubview(emptyView)
+        
+        getChatRoomsInfoFromFirestore()
         checkLoggedInUser()
     }
     
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        getChatRoomsInfoFromFirestore()
+//    }
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        checkLoggedInUser()
+//    }
+//
     // ユーザーが現在存在するのかはチェック
     private func checkLoggedInUser() {
         if Auth.auth().currentUser?.uid == nil {
@@ -36,6 +52,93 @@ class ChatListViewController: UIViewController {
         }
     }
     
+    // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
+    private func getChatRoomsInfoFromFirestore() {
+        Firestore.firestore().collection("chatRooms").addSnapshotListener { (snapshots, err) in
+            if let err = err {
+                print("チャットルーム情報の取得に失敗しました。\(err)")
+                return
+            }
+            // スナップショットの変更内容の種別（追加・更新・削除）を配列で取得する
+            snapshots?.documentChanges.forEach({ (documentChange) in
+                switch documentChange.type {
+                case .added:
+                    self.handleAddedDocumentChange(documentChange: documentChange)
+                case .modified:
+                    print("nothing to do")
+                case .removed:
+                    print("nothing to do")
+                }
+                
+            })
+            
+        }
+        
+    }
+    
+    private func handleAddedDocumentChange(documentChange: DocumentChange) {
+        let dic = documentChange.document.data()
+        let chatRoom = ChatRoom.init(dic: dic)
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        chatRoom.members.forEach { (memberUid) in
+            if memberUid != uid {
+                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("ユーザー情報の取得に失敗しました。\(err)")
+                        return
+                    }
+                    print("ユーザー情報の取得に成功しました。")
+                    guard let snapshot = snapshot,
+                          let dic = snapshot.data()
+                    else { return }
+                    
+                    let user = User.init(dic: dic)
+                    user.uid = documentChange.document.documentID
+                    chatRoom.partnerUser = user
+                    
+                    self.chatRooms.append(chatRoom)
+                    
+                    
+                    // chatListTableViewを更新
+                    self.chatListTableView.reloadData()
+                }
+                
+            }
+            
+        }
+
+    }
+    
+    // ログインユーザー情報はInfoViewControllerで表示予定
+    // ログインユーザーの情報をFirebaseFirestoreから取得する処理
+    private func getLoginUserInfoFromFirestore() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print("ログインユーザー情報の取得に失敗しました。\(err)")
+                return
+            }
+            print("ログインユーザー情報の取得に成功しました。")
+            guard let snapshot = snapshot,
+                  let dic = snapshot.data()
+            else { return }
+            
+            let user = User.init(dic: dic)
+            self.user = user
+            
+        }
+    }
+    
+//    func emptyViewDisplayAction() {
+//        if chatRooms.count == 0 {
+//            emptyView.isHidden = false
+//        } else {
+//            emptyView.isHidden = true
+//        }
+//    }
+
     // LoginViewControllerへ画面遷移
     private func presentToLoginVC() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
@@ -70,18 +173,14 @@ class ChatListViewController: UIViewController {
 extension ChatListViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return chatRooms.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = chatListTableView.dequeueReusableCell(withIdentifier: "ChatListCell", for: indexPath) as? ChatListTableViewCell else {
             return UITableViewCell()
         }
-        cell.partnerImage.image = UIImage(named: "partnerImage")
-        cell.partnerNameLabel.text = "あいうえお"
-        cell.messageLabel.text = "あいうえおかきくけこさしすせそ"
-        cell.dateLabel.text = "12:12"
-        
+        cell.chatRoom = chatRooms[indexPath.row]
         return cell
     }
 
@@ -96,27 +195,6 @@ extension ChatListViewController: UITableViewDelegate {
         let storyboard = UIStoryboard(name: "ChatRoom", bundle: nil)
         let chatRoomVC = storyboard.instantiateViewController(withIdentifier: "ChatRoomVC") as! ChatRoomViewController
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
-    }
-
-}
-
-class ChatListTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var partnerImage: UIImageView!
-    @IBOutlet weak var partnerNameLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        partnerImage.layer.masksToBounds = true
-        partnerImage.layer.cornerRadius = 30
-        
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
     }
 
 }

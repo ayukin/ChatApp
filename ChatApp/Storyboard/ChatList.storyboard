@@ -43,7 +43,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fF7-N7-OXQ">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blankimage" translatesAutoresizingMaskIntoConstraints="NO" id="fF7-N7-OXQ">
                                                     <rect key="frame" x="20" y="7.5" width="55" height="55"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="55" id="DXU-6T-sQc"/>
@@ -92,10 +92,10 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="dateLabel" destination="KXK-yN-ND7" id="mBd-dV-Q12"/>
-                                            <outlet property="messageLabel" destination="I0X-ip-XXp" id="ZvE-SK-Yqc"/>
-                                            <outlet property="partnerImage" destination="fF7-N7-OXQ" id="rLm-mQ-WhQ"/>
-                                            <outlet property="partnerNameLabel" destination="hy0-ZL-cQJ" id="266-1e-hJU"/>
+                                            <outlet property="dateLabel" destination="KXK-yN-ND7" id="U8U-by-acw"/>
+                                            <outlet property="messageLabel" destination="I0X-ip-XXp" id="dwo-Tc-Kug"/>
+                                            <outlet property="partnerImage" destination="fF7-N7-OXQ" id="0CI-wb-LmU"/>
+                                            <outlet property="partnerNameLabel" destination="hy0-ZL-cQJ" id="a2E-f1-rh8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -136,6 +136,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="blankimage" width="1280" height="1280"/>
         <image name="chat" width="25" height="25"/>
         <image name="gear" width="25" height="25"/>
         <systemColor name="systemBackgroundColor">
