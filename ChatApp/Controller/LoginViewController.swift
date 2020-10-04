@@ -49,9 +49,6 @@ class LoginViewController: UIViewController {
               let password = passwordTextField.text
         else { return }
         
-//        guard let email = emailTextField.text else { return }
-//        guard let password = passwordTextField.text else { return }
-        
         Auth.auth().signIn(withEmail: email, password: password) { (res, err) in
             if let err = err {
                 print("ログイン情報の取得に失敗しました。\(err)")

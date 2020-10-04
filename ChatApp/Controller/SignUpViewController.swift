@@ -59,9 +59,6 @@ class SignUpViewController: UIViewController {
               let password = passwordTextField.text
         else { return }
         
-//        guard let email = emailTextField.text else { return }
-//        guard let password = passwordTextField.text else { return }
-        
         // FirebaseAuthへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
@@ -108,24 +105,6 @@ class SignUpViewController: UIViewController {
                 print("Firestorageへの保存に成功しました。")
                 // User情報をFirebaseFirestoreへ保存
                 self.createUserToFirestore(profileImageName: fileName)
-    
-//                storageRef.downloadURL { (url, err) in
-//                    if let err = err {
-//                        print("Firestorageからダウンロードに失敗しました。\(err)")
-//                        // アクティビティインディケータのアニメーション停止
-//                        self.dismissIndicator()
-//                        // アラートの表示
-//                        let errorAlert = UIAlertController.errorAlert(message: "画像のダウンロードに失敗しました。")
-//                        self.present(errorAlert, animated: true, completion: nil)
-//
-//                        return
-//                    }
-//                    print("Firestorageからダウンロードに成功しました。")
-//                    guard let urlString = url?.absoluteString else { return }
-//                    // User情報をFirebaseFirestoreへ保存
-//                    self.createUserToFirestore(profileImageUrl: urlString)
-//
-//                }
                 
             }
             

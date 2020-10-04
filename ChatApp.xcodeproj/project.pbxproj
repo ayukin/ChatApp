@@ -179,8 +179,8 @@
 				849882272520E5B60003E866 /* LoginViewController.swift */,
 				8498822C2520E5C50003E866 /* SignUpViewController.swift */,
 				84AC55D6251F51A90037B66B /* ChatListViewController.swift */,
-				8412AAC3251F9768003BDD47 /* ChatRoomViewController.swift */,
 				849882122520D1450003E866 /* ChatCreateViewController.swift */,
+				8412AAC3251F9768003BDD47 /* ChatRoomViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

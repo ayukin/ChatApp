@@ -18,22 +18,17 @@ class ChatListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
-        // ナビゲーションバーのカスタマイズ
-        self.navigationController?.navigationBar.barTintColor = UIColor(named: "lineGray")
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        self.navigationController?.navigationBar.tintColor = UIColor.white
         
+        getChatRoomsInfoFromFirestore()
+        checkLoggedInUser()
+
+        self.navigationItem.title = "トーク一覧"
         self.chatListTableView.tableFooterView = UIView()
         
 //        emptyView = EmptyView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
 //        self.view.addSubview(emptyView)
         
-        getChatRoomsInfoFromFirestore()
-        checkLoggedInUser()
-    }
+        }
     
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)

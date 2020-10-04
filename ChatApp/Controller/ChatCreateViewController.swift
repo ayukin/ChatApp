@@ -12,6 +12,8 @@ class ChatCreateViewController: UIViewController {
     
     @IBOutlet weak var chatCreateTableView: UITableView!
     
+    var window: UIWindow?
+    
     var closeBtn: UIBarButtonItem!
     var createBtn: UIBarButtonItem!
     
@@ -20,13 +22,6 @@ class ChatCreateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // ナビゲーションバーのカスタマイズ
-        self.navigationController?.navigationBar.barTintColor = UIColor(named: "lineGray")
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
-        self.navigationController?.navigationBar.tintColor = UIColor.white
         
         self.navigationItem.title = "相手を選択"
         
@@ -38,7 +33,7 @@ class ChatCreateViewController: UIViewController {
         createBtn = UIBarButtonItem(title: "作成", style: .plain, target: self, action: #selector(self.createProject(sender:)))
         createBtn.isEnabled = false
         self.navigationItem.setRightBarButton(createBtn, animated: true)
-    
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

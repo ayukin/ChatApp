@@ -24,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="-257" y="9"/>
         </scene>
-        <!--トーク一覧-->
+        <!--Chat List View Controller-->
         <scene sceneID="Vra-37-Ed6">
             <objects>
                 <viewController storyboardIdentifier="ChatListVC" id="byy-MN-cok" customClass="ChatListViewController" customModule="ChatApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -114,7 +114,7 @@
                             <constraint firstItem="dY4-gs-orK" firstAttribute="leading" secondItem="SgF-Dv-5Gx" secondAttribute="leading" id="w4X-D0-JAM"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="トーク一覧" id="fkY-gb-WOi">
+                    <navigationItem key="navigationItem" id="fkY-gb-WOi">
                         <barButtonItem key="leftBarButtonItem" image="gear" id="WgK-YJ-75a">
                             <connections>
                                 <action selector="infoButtonAction:" destination="byy-MN-cok" id="CX4-uP-XfC"/>

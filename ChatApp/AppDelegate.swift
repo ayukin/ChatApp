@@ -11,12 +11,15 @@ import Firebase
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
-        let db = Firestore.firestore()
+        let _ = Firestore.firestore()
+        
+        // ナビゲーションバーのカスタマイズ
+        UINavigationBar.appearance().barTintColor = UIColor(named: "lineGray")
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
         
         return true
     }
