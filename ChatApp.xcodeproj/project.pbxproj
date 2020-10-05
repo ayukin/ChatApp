@@ -21,6 +21,7 @@
 		84894D4D25206A74000128BF /* MyBalloonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84894D4C25206A74000128BF /* MyBalloonView.swift */; };
 		84894D5625206EB8000128BF /* YourChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84894D5425206EB8000128BF /* YourChatViewCell.swift */; };
 		84894D5725206EB8000128BF /* YourChatViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84894D5525206EB8000128BF /* YourChatViewCell.xib */; };
+		84933B9D252B4FCB00CE2390 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84933B9C252B4FCB00CE2390 /* Message.swift */; };
 		84988206252076240003E866 /* YourBalloonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84988205252076240003E866 /* YourBalloonView.swift */; };
 		8498820B2520D0660003E866 /* ChatCreate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8498820A2520D0660003E866 /* ChatCreate.storyboard */; };
 		849882132520D1450003E866 /* ChatCreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849882122520D1450003E866 /* ChatCreateViewController.swift */; };
@@ -80,6 +81,7 @@
 		84894D4C25206A74000128BF /* MyBalloonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBalloonView.swift; sourceTree = "<group>"; };
 		84894D5425206EB8000128BF /* YourChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourChatViewCell.swift; sourceTree = "<group>"; };
 		84894D5525206EB8000128BF /* YourChatViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = YourChatViewCell.xib; sourceTree = "<group>"; };
+		84933B9C252B4FCB00CE2390 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		84988205252076240003E866 /* YourBalloonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourBalloonView.swift; sourceTree = "<group>"; };
 		8498820A2520D0660003E866 /* ChatCreate.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ChatCreate.storyboard; sourceTree = "<group>"; };
 		849882122520D1450003E866 /* ChatCreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCreateViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			children = (
 				84FA640D25286E4000F3550D /* User.swift */,
 				84FA641E2528EFD600F3550D /* ChatRoom.swift */,
+				84933B9C252B4FCB00CE2390 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				84AC55D7251F51A90037B66B /* ChatListViewController.swift in Sources */,
 				84AC55A1251F4EE00037B66B /* SceneDelegate.swift in Sources */,
 				84988206252076240003E866 /* YourBalloonView.swift in Sources */,
+				84933B9D252B4FCB00CE2390 /* Message.swift in Sources */,
 				84647C522527581200F2CCC3 /* ChatInputAccessoryView.swift in Sources */,
 				849882282520E5B60003E866 /* LoginViewController.swift in Sources */,
 			);

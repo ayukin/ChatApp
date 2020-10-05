@@ -12,13 +12,14 @@ class ChatListViewController: UIViewController {
     
     @IBOutlet weak var chatListTableView: UITableView!
     
-    private var emptyView: EmptyView!
+//    private var emptyView: EmptyView!
     private var user: User?
     private var chatRooms = [ChatRoom]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getLoginUserInfoFromFirestore()
         getChatRoomsInfoFromFirestore()
         checkLoggedInUser()
 
@@ -64,16 +65,14 @@ class ChatListViewController: UIViewController {
                 case .removed:
                     print("nothing to do")
                 }
-                
             })
-            
         }
-        
     }
     
     private func handleAddedDocumentChange(documentChange: DocumentChange) {
         let dic = documentChange.document.data()
         let chatRoom = ChatRoom.init(dic: dic)
+        chatRoom.documentId = documentChange.document.documentID
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         chatRoom.members.forEach { (memberUid) in
@@ -84,17 +83,13 @@ class ChatListViewController: UIViewController {
                         return
                     }
                     print("ユーザー情報の取得に成功しました。")
-                    guard let snapshot = snapshot,
-                          let dic = snapshot.data()
-                    else { return }
+                    guard let dic = snapshot?.data() else { return }
                     
                     let user = User.init(dic: dic)
                     user.uid = documentChange.document.documentID
                     chatRoom.partnerUser = user
                     
                     self.chatRooms.append(chatRoom)
-                    
-                    
                     // chatListTableViewを更新
                     self.chatListTableView.reloadData()
                 }
@@ -189,6 +184,8 @@ extension ChatListViewController: UITableViewDelegate {
         // ChatRoomViewControllerへ画面遷移
         let storyboard = UIStoryboard(name: "ChatRoom", bundle: nil)
         let chatRoomVC = storyboard.instantiateViewController(withIdentifier: "ChatRoomVC") as! ChatRoomViewController
+        chatRoomVC.user = user
+        chatRoomVC.chatRoom = chatRooms[indexPath.row]
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
     }
 

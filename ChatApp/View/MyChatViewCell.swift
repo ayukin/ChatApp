@@ -13,6 +13,16 @@ class MyChatViewCell: UITableViewCell {
     @IBOutlet weak var myDateLabel: UILabel!
     @IBOutlet weak var myTimeLabel: UILabel!
     
+    var message: Message? {
+        didSet {
+            if let message = message {
+                myTextView.text = message.message
+                myTimeLabel.text = "2020/12/12"
+                myDateLabel.text = "12:12"
+            }
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -34,10 +44,10 @@ class MyChatViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func updateCell(text: String, date: String, time: String) {
-        self.myTextView?.text = text
-        self.myDateLabel?.text = date
-        self.myTimeLabel?.text = time
+//    func updateCell(text: String, date: String, time: String) {
+//        self.myTextView?.text = text
+//        self.myDateLabel?.text = date
+//        self.myTimeLabel?.text = time
         
 //        let frame = CGSize(width: self.frame.width - 8, height: CGFloat.greatestFiniteMagnitude)
 //        var rect = self.myTextView.sizeThatFits(frame)
@@ -46,6 +56,6 @@ class MyChatViewCell: UITableViewCell {
 //        }
 //        //テキストが短くても最小のビューの幅を30とする
 //        myTextViewWidthConstraint.constant = rect.width
-    }
+//    }
     
 }

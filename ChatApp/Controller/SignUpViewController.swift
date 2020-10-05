@@ -58,7 +58,7 @@ class SignUpViewController: UIViewController {
         guard let email = emailTextField.text,
               let password = passwordTextField.text
         else { return }
-        
+                
         // FirebaseAuthへ保存
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
@@ -89,9 +89,10 @@ class SignUpViewController: UIViewController {
         if let image = self.profileImageButton.imageView?.image {
             let uploadImage = image.jpegData(compressionQuality: 0.5)
             let fileName = NSUUID().uuidString
+            print(type(of: uploadImage))
             let storageRef = Storage.storage().reference().child("profile_image").child(fileName)
             // FirebaseStorageへ保存
-            storageRef.putData(uploadImage!, metadata: nil) { (metadate, err) in
+            storageRef.putData(uploadImage!, metadata: nil) { (metadata, err) in
                 if let err = err {
                     print("Firestorageへの保存に失敗しました。\(err)")
                     // アクティビティインディケータのアニメーション停止
@@ -125,13 +126,13 @@ class SignUpViewController: UIViewController {
         else { return }
         
         // 保存内容を定義する（辞書型）
-        let docDate = ["email": email,
+        let docData = ["email": email,
                        "userName": userName,
                        "profileImageName": profileImageName,
                        "createdAt": Timestamp()]
             as [String : Any?]
         // FirebaseFirestoreへ保存
-        Firestore.firestore().collection("users").document(uid).setData(docDate as [String : Any]) { (err) in
+        Firestore.firestore().collection("users").document(uid).setData(docData as [String : Any]) { (err) in
             if let err = err {
                 print("Firestoreへの保存に失敗しました。\(err)")
                 // アクティビティインディケータのアニメーション停止

@@ -88,7 +88,7 @@ class ChatInputAccessoryView: UIView {
 }
 
 extension ChatInputAccessoryView: UITextViewDelegate {
-    
+
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.isEmpty {
             sendButton.isEnabled = false

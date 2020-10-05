@@ -12,7 +12,9 @@ class ChatRoomViewController: UIViewController {
     
     @IBOutlet weak var ChatRoomTableView: UITableView!
     
-    private var messages = [String]()
+    var user: User?
+    var chatRoom: ChatRoom?
+    private var messages = [Message]()
     
     private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
@@ -26,6 +28,8 @@ class ChatRoomViewController: UIViewController {
         
         self.navigationItem.title = ""
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        getMessages()
         
         // 画面UIについての処理
         setupUI()
@@ -43,7 +47,7 @@ class ChatRoomViewController: UIViewController {
     override var canBecomeFirstResponder: Bool {
         return true
     }
-
+    
     // 画面UIについての処理
     func setupUI() {
         
@@ -59,10 +63,40 @@ class ChatRoomViewController: UIViewController {
         
     }
     
+    private func getMessages() {
+        guard let chatRoomDocId = chatRoom?.documentId else { return }
+        
+        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").addSnapshotListener { (snapshots, err) in
+            if let err = err {
+                print("メッセージ情報の取得に失敗しました。\(err)")
+                return
+            }
+            // スナップショットの変更内容の種別（追加・更新・削除）を配列で取得する
+            snapshots?.documentChanges.forEach({ (documentChange) in
+                switch documentChange.type {
+                case .added:
+                    let dic = documentChange.document.data()
+                    let message = Message(dic: dic)
+                    self.messages.append(message)
+                    // ChatRoomTableViewを更新
+                    self.ChatRoomTableView.reloadData()
+
+
+                case .modified:
+                    print("nothing to do")
+                case .removed:
+                    print("nothing to do")
+                }
+            })
+
+        }
+    }
+    
 }
 
 extension ChatRoomViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print(messages.count)
         return messages.count
     }
     
@@ -71,7 +105,7 @@ extension ChatRoomViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         cell.clipsToBounds = true // bound外のものを表示しない
-        cell.updateCell(text: messages[indexPath.row], date: "2020/12/12", time: "12:12")
+        cell.message = messages[indexPath.row]
         return cell
         
 //        guard let cell = ChatRoomTableView.dequeueReusableCell(withIdentifier: "YourChat", for: indexPath) as? YourChatViewCell else {
@@ -118,9 +152,29 @@ extension ChatRoomViewController: UITableViewDelegate {
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
     
     func chatTextViewSendAction(text: String) {
-        messages.append(text)
+//        messages.append(text)
+//        // ChatRoomTableViewを更新
+//        self.ChatRoomTableView.reloadData()
+        
+        guard let chatRoomDocId = chatRoom?.documentId,
+              let userName = user?.userName,
+              let uid = Auth.auth().currentUser?.uid
+              else { return }
         chatInputAccessoryView.removeText()
-        // ChatRoomTableViewを更新
-        self.ChatRoomTableView.reloadData()
+        
+        let docData = ["userName": userName,
+                       "uid": uid,
+                       "message": text,
+                       "createdAt": Timestamp()]
+            as [String : Any?]
+
+        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document().setData(docData as [String : Any]) { (err) in
+            if let err = err {
+                print("メッセージ情報の保存に失敗しました。\(err)")
+                return
+            }
+            print("メッセージ情報の保存に成功しました。")
+        }
     }
+    
 }
