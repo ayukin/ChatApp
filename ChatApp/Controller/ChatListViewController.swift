@@ -22,14 +22,20 @@ class ChatListViewController: UIViewController {
         getLoginUserInfoFromFirestore()
         getChatRoomsInfoFromFirestore()
         checkLoggedInUser()
+        
+        // 画面UIについての処理
+        setupUI()
 
+    }
+    
+    // 画面UIについての処理
+    func setupUI() {
         self.navigationItem.title = "トーク一覧"
         self.chatListTableView.tableFooterView = UIView()
-        
 //        emptyView = EmptyView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
 //        self.view.addSubview(emptyView)
-        
-        }
+    }
+
     
 //    override func viewWillAppear(_ animated: Bool) {
 //        super.viewWillAppear(animated)

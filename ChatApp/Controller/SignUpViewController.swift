@@ -58,23 +58,30 @@ class SignUpViewController: UIViewController {
         guard let email = emailTextField.text,
               let password = passwordTextField.text
         else { return }
-                
+        
         // FirebaseAuthへ保存
-        Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
-            if let err = err {
-                print("認証情報の保存に失敗しました。\(err)")
-                // アクティビティインディケータのアニメーション停止
-                self.dismissIndicator()
-                // アラートの表示
-                let errorAlert = UIAlertController.errorAlert(message: "認証情報の保存に失敗しました。")
-                self.present(errorAlert, animated: true, completion: nil)
-                
-                return
-            }
+        SignUpModel.createUser(email: email, password: password) {
             print("認証情報の保存に成功しました。")
             // プロフィール画像をFirebaseStorageへ保存
             self.createImageToFirestorage()
         }
+        
+//        // FirebaseAuthへ保存
+//        Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
+//            if let err = err {
+//                print("認証情報の保存に失敗しました。\(err)")
+//                // アクティビティインディケータのアニメーション停止
+//                self.dismissIndicator()
+//                // アラートの表示
+//                let errorAlert = UIAlertController.errorAlert(message: "認証情報の保存に失敗しました。")
+//                self.present(errorAlert, animated: true, completion: nil)
+//
+//                return
+//            }
+//            print("認証情報の保存に成功しました。")
+//            // プロフィール画像をFirebaseStorageへ保存
+//            self.createImageToFirestorage()
+//        }
         
     }
     
@@ -113,6 +120,7 @@ class SignUpViewController: UIViewController {
             print("プロフィール画像が設定されていないため、デフォルト画像になります。")
             // User情報をFirebaseFirestoreへ保存
             self.createUserToFirestore(profileImageName: nil)
+            
         }
         
     }

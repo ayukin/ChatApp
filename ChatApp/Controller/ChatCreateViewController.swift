@@ -23,24 +23,29 @@ class ChatCreateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "相手を選択"
+        getUserInfoFromFirestore()
         
+        // 画面UIについての処理
+        setupUI()
+    }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        getUserInfoFromFirestore()
+//    }
+    
+    // 画面UIについての処理
+    func setupUI() {
+        self.navigationItem.title = "相手を選択"
         // ナビゲーションバー左上のボタン作成
         closeBtn = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(self.cancelProject(sender:)))
         self.navigationItem.setLeftBarButton(closeBtn, animated: true)
-        
         // ナビゲーションバー右上のボタン作成
         createBtn = UIBarButtonItem(title: "作成", style: .plain, target: self, action: #selector(self.createProject(sender:)))
         createBtn.isEnabled = false
         self.navigationItem.setRightBarButton(createBtn, animated: true)
-        
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        getUserInfoFromFirestore()
-    }
-    
+
     // ユーザーの情報をFirebaseFirestoreから取得する処理
     private func getUserInfoFromFirestore() {
         Firestore.firestore().collection("users").getDocuments { (snapshots, err) in

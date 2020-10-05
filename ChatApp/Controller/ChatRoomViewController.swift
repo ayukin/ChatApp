@@ -10,7 +10,7 @@ import Firebase
 
 class ChatRoomViewController: UIViewController {
     
-    @IBOutlet weak var ChatRoomTableView: UITableView!
+    @IBOutlet weak var chatRoomTableView: UITableView!
     
     var user: User?
     var chatRoom: ChatRoom?
@@ -51,15 +51,21 @@ class ChatRoomViewController: UIViewController {
     // 画面UIについての処理
     func setupUI() {
         
-        ChatRoomTableView.backgroundColor = UIColor(red: 113/255, green: 148/255, blue: 194/255, alpha: 1)
-        ChatRoomTableView.separatorColor = UIColor.clear // セルを区切る線を見えなくする
-        ChatRoomTableView.estimatedRowHeight = 10000 // セルが高さ以上になった場合バインバインという動きをするが、それを防ぐために大きな値を設定
-        ChatRoomTableView.rowHeight = UITableView.automaticDimension // Contentに合わせたセルの高さに設定
-        ChatRoomTableView.allowsSelection = false // 選択を不可にする
-        ChatRoomTableView.keyboardDismissMode = .interactive // テーブルビューをキーボードをまたぐように下にスワイプした時にキーボードを閉じる
+        self.navigationItem.title = ""
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        ChatRoomTableView.register(UINib(nibName: "MyChatViewCell", bundle: nil), forCellReuseIdentifier: "MyChat")
-        ChatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
+        chatRoomTableView.backgroundColor = UIColor(named: "lineSkyBlue")
+        // セルが高さ以上になった場合バインバインという動きをするが、それを防ぐために大きな値を設定
+        chatRoomTableView.estimatedRowHeight = 10000
+        // Contentに合わせたセルの高さに設定
+        chatRoomTableView.rowHeight = UITableView.automaticDimension
+        // 選択を不可にする
+        chatRoomTableView.allowsSelection = false
+        // テーブルビューをキーボードをまたぐように下にスワイプした時にキーボードを閉じる
+        chatRoomTableView.keyboardDismissMode = .interactive
+        
+        chatRoomTableView.register(UINib(nibName: "MyChatViewCell", bundle: nil), forCellReuseIdentifier: "MyChat")
+        chatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
         
     }
     
@@ -79,7 +85,7 @@ class ChatRoomViewController: UIViewController {
                     let message = Message(dic: dic)
                     self.messages.append(message)
                     // ChatRoomTableViewを更新
-                    self.ChatRoomTableView.reloadData()
+                    self.chatRoomTableView.reloadData()
 
 
                 case .modified:
@@ -101,7 +107,7 @@ extension ChatRoomViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = ChatRoomTableView.dequeueReusableCell(withIdentifier: "MyChat", for: indexPath) as? MyChatViewCell else {
+        guard let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: "MyChat", for: indexPath) as? MyChatViewCell else {
             return UITableViewCell()
         }
         cell.clipsToBounds = true // bound外のものを表示しない
