@@ -15,6 +15,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     
+    let loginModel = LoginModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,6 +24,7 @@ class LoginViewController: UIViewController {
         
         emailTextField.delegate = self
         passwordTextField.delegate = self
+        loginModel.delegate = self
         
         // 画面UIについての処理
         setupUI()
@@ -49,30 +52,8 @@ class LoginViewController: UIViewController {
               let password = passwordTextField.text
         else { return }
         
-        Auth.auth().signIn(withEmail: email, password: password) { (res, err) in
-            if let err = err {
-                print("ログイン情報の取得に失敗しました。\(err)")
-                // アクティビティインディケータのアニメーション停止
-                self.dismissIndicator()
-                // アラートの表示
-                let errorAlert = UIAlertController.errorAlert(message: "ログイン情報の取得に失敗しました。")
-                self.present(errorAlert, animated: true, completion: nil)
-                
-                return
-            }
-            print("ログインに成功しました。")
-            
-            // アクティビティインディケータのアニメーション停止
-            self.dismissIndicator()
-            
-            // ChatListViewControllerへ画面遷移
-            let storyboard = UIStoryboard(name: "ChatList", bundle: nil)
-            let chatListVC = storyboard.instantiateViewController(withIdentifier: "ChatListVC") as! ChatListViewController
-            let nav = UINavigationController(rootViewController: chatListVC)
-            nav.modalPresentationStyle = .fullScreen
-            nav.modalTransitionStyle = .crossDissolve
-            self.present(nav, animated: true, completion: nil)
-        }
+        // FirebaseAuthへログイン
+        loginModel.loginUser(email: email, password: password)
         
     }
     
@@ -105,4 +86,30 @@ extension LoginViewController: UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+}
+
+extension LoginViewController: LoginModelDelegate {
+    
+    // ユーザーがログインに失敗した時の処理
+    func failedRegisterAction() {
+        // アクティビティインディケータのアニメーション停止
+        self.dismissIndicator()
+        // アラートの表示
+        let errorAlert = UIAlertController.errorAlert(message: "ログインに失敗しました。")
+        self.present(errorAlert, animated: true, completion: nil)
+    }
+    
+    // ユーザーがログインに成功した時の処理
+    func completedLoginAction() {
+        // アクティビティインディケータのアニメーション停止
+        self.dismissIndicator()
+        // ChatListViewControllerへ画面遷移
+        let storyboard = UIStoryboard(name: "ChatList", bundle: nil)
+        let chatListVC = storyboard.instantiateViewController(withIdentifier: "ChatListVC") as! ChatListViewController
+        let nav = UINavigationController(rootViewController: chatListVC)
+        nav.modalPresentationStyle = .fullScreen
+        nav.modalTransitionStyle = .crossDissolve
+        self.present(nav, animated: true, completion: nil)
+    }
+    
 }

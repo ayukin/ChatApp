@@ -89,7 +89,7 @@ class ChatCreateViewController: UIViewController {
             as [String : Any?]
         
         // FirebaseFirestoreへ保存
-        Firestore.firestore().collection("chatRooms").addDocument(data: docDate) { (err) in
+        Firestore.firestore().collection("chatRooms").addDocument(data: docDate as [String : Any]) { (err) in
             if let err = err {
                 print("ChatRoom情報の保存に失敗しました。\(err)")
                 
