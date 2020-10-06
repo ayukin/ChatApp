@@ -19,9 +19,9 @@ class ChatListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkLoggedInUser()
         getLoginUserInfoFromFirestore()
         getChatRoomsInfoFromFirestore()
-        checkLoggedInUser()
         
         // 画面UIについての処理
         setupUI()
