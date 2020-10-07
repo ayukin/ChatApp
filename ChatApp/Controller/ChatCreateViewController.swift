@@ -45,7 +45,7 @@ class ChatCreateViewController: UIViewController {
     }
 
     // トークルーム作成処理
-    @objc func createProject(sender: UIBarButtonItem){
+    @objc func createProject(sender: UIBarButtonItem) {
         
         guard let uid = Auth.auth().currentUser?.uid,
               let partnerUid = self.selectedUser?.uid
@@ -63,7 +63,7 @@ class ChatCreateViewController: UIViewController {
     
     // モーダルを閉じる処理
     @objc func cancelProject(sender: UIBarButtonItem){
-      self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

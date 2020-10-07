@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--User Info View Controller-->
+        <scene sceneID="0Qa-GX-Gnw">
+            <objects>
+                <viewController storyboardIdentifier="UserInfoVC" id="wL6-k0-bZo" customClass="UserInfoViewController" customModule="ChatApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TZ1-Kw-C3a">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blankimage" translatesAutoresizingMaskIntoConstraints="NO" id="iJ0-5J-YCp">
+                                <rect key="frame" x="132" y="343" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="GzC-jC-sOU"/>
+                                    <constraint firstAttribute="height" constant="150" id="fRS-TP-NTz"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ユーザーネーム" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RY9-K9-1dg">
+                                <rect key="frame" x="20" y="533" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="メールアドレス" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yKH-Nn-Qb9">
+                                <rect key="frame" x="20" y="569" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="XZj-nR-UGF"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstItem="iJ0-5J-YCp" firstAttribute="centerX" secondItem="TZ1-Kw-C3a" secondAttribute="centerX" id="55b-g2-DAh"/>
+                            <constraint firstItem="RY9-K9-1dg" firstAttribute="top" secondItem="iJ0-5J-YCp" secondAttribute="bottom" constant="40" id="BON-hu-Fob"/>
+                            <constraint firstItem="iJ0-5J-YCp" firstAttribute="centerY" secondItem="TZ1-Kw-C3a" secondAttribute="centerY" constant="-30" id="DDm-3I-yci"/>
+                            <constraint firstItem="XZj-nR-UGF" firstAttribute="trailing" secondItem="RY9-K9-1dg" secondAttribute="trailing" constant="20" id="P9D-Gu-TSv"/>
+                            <constraint firstItem="yKH-Nn-Qb9" firstAttribute="leading" secondItem="XZj-nR-UGF" secondAttribute="leading" constant="20" id="cZF-Cs-rfD"/>
+                            <constraint firstItem="XZj-nR-UGF" firstAttribute="trailing" secondItem="yKH-Nn-Qb9" secondAttribute="trailing" constant="20" id="dbS-ho-55f"/>
+                            <constraint firstItem="yKH-Nn-Qb9" firstAttribute="centerX" secondItem="TZ1-Kw-C3a" secondAttribute="centerX" id="m2O-J8-2QA"/>
+                            <constraint firstItem="RY9-K9-1dg" firstAttribute="centerX" secondItem="TZ1-Kw-C3a" secondAttribute="centerX" id="nLe-WX-Uvi"/>
+                            <constraint firstItem="RY9-K9-1dg" firstAttribute="leading" secondItem="XZj-nR-UGF" secondAttribute="leading" constant="20" id="nQi-Qg-tLD"/>
+                            <constraint firstItem="yKH-Nn-Qb9" firstAttribute="top" secondItem="RY9-K9-1dg" secondAttribute="bottom" constant="15" id="pKk-zI-oRy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="userEmailLabel" destination="yKH-Nn-Qb9" id="4d7-tr-EYF"/>
+                        <outlet property="userImageView" destination="iJ0-5J-YCp" id="T8R-dd-bya"/>
+                        <outlet property="userNameLabel" destination="RY9-K9-1dg" id="jWa-gf-xre"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hZw-j2-HV9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-117.39130434782609" y="12.723214285714285"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="blankimage" width="1280" height="1280"/>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

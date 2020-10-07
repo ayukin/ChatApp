@@ -23,8 +23,6 @@ class ChatListViewController: UIViewController {
         
         chatListModel.delegate = self
         
-        // ユーザーが現在存在するのかはチェック
-        chatListModel.checkLoggedInUser()
         // ログインユーザーの情報をFirebaseFirestoreから取得する処理
         chatListModel.getLoginUserInfoFromFirestore()
         // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
@@ -32,6 +30,12 @@ class ChatListViewController: UIViewController {
         
         // 画面UIについての処理
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // ユーザーが現在存在するのかはチェック
+        chatListModel.checkLoggedInUser()
     }
     
     // 画面UIについての処理
@@ -61,13 +65,11 @@ class ChatListViewController: UIViewController {
     
     // InfoViewControllerへ画面遷移
     @IBAction func infoButtonAction(_ sender: Any) {
-        // ログアウト（仮）
-        do {
-            try Auth.auth().signOut()
-            presentToLoginVC()
-        } catch (let err) {
-            print("ログアウトに失敗しました。\(err)")
-        }
+        let storyboard: UIStoryboard = UIStoryboard(name: "UserInfo", bundle: nil)
+        let userInfoVC = storyboard.instantiateViewController(withIdentifier: "UserInfoVC") as! UserInfoViewController
+        let nav = UINavigationController(rootViewController: userInfoVC)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
 
 }
