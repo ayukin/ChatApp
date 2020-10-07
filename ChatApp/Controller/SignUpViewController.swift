@@ -170,7 +170,7 @@ extension SignUpViewController: SignUpModelDelegate {
     }
     
     // ユーザー情報の登録が完了した時の処理
-    func completedRegisterAction() {
+    func completedRegisterUserInfoAction() {
         // アクティビティインディケータのアニメーション停止
         self.dismissIndicator()
         // ChatListViewControllerへ画面遷移

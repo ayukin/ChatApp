@@ -16,6 +16,8 @@
 		84445BF12528566E0020F70F /* ChatCreateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84445BF02528566E0020F70F /* ChatCreateTableViewCell.swift */; };
 		845D3BA42525D88A0038CCE1 /* UIViewController_Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D3BA32525D88A0038CCE1 /* UIViewController_Extension.swift */; };
 		845D3BAC2525EB3C0038CCE1 /* UIAlertController_ Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D3BAB2525EB3C0038CCE1 /* UIAlertController_ Extension.swift */; };
+		845D706B252DC1330085FDE0 /* ChatCreateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D706A252DC1330085FDE0 /* ChatCreateModel.swift */; };
+		845D7070252DC14C0085FDE0 /* ChatRoomModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D706F252DC14C0085FDE0 /* ChatRoomModel.swift */; };
 		84647C4A252732B100F2CCC3 /* ChatInputAccessoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84647C49252732B100F2CCC3 /* ChatInputAccessoryView.xib */; };
 		84647C522527581200F2CCC3 /* ChatInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84647C512527581200F2CCC3 /* ChatInputAccessoryView.swift */; };
 		84894D4725204DAA000128BF /* MyChatViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84894D4525204DA9000128BF /* MyChatViewCell.swift */; };
@@ -79,6 +81,8 @@
 		84445BF02528566E0020F70F /* ChatCreateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCreateTableViewCell.swift; sourceTree = "<group>"; };
 		845D3BA32525D88A0038CCE1 /* UIViewController_Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController_Extension.swift; sourceTree = "<group>"; };
 		845D3BAB2525EB3C0038CCE1 /* UIAlertController_ Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController_ Extension.swift"; sourceTree = "<group>"; };
+		845D706A252DC1330085FDE0 /* ChatCreateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCreateModel.swift; sourceTree = "<group>"; };
+		845D706F252DC14C0085FDE0 /* ChatRoomModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomModel.swift; sourceTree = "<group>"; };
 		84647C49252732B100F2CCC3 /* ChatInputAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatInputAccessoryView.xib; sourceTree = "<group>"; };
 		84647C512527581200F2CCC3 /* ChatInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatInputAccessoryView.swift; sourceTree = "<group>"; };
 		84894D4525204DA9000128BF /* MyChatViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChatViewCell.swift; sourceTree = "<group>"; };
@@ -181,6 +185,8 @@
 				8424C31B252C9C040049FBBD /* LoginModel.swift */,
 				84933BA1252B651E00CE2390 /* SignUpModel.swift */,
 				8424C323252CA2800049FBBD /* ChatListModel.swift */,
+				845D706A252DC1330085FDE0 /* ChatCreateModel.swift */,
+				845D706F252DC14C0085FDE0 /* ChatRoomModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -551,6 +557,7 @@
 				84AC559F251F4EE00037B66B /* AppDelegate.swift in Sources */,
 				8424C31C252C9C050049FBBD /* LoginModel.swift in Sources */,
 				84445BF12528566E0020F70F /* ChatCreateTableViewCell.swift in Sources */,
+				845D706B252DC1330085FDE0 /* ChatCreateModel.swift in Sources */,
 				84894D5625206EB8000128BF /* YourChatViewCell.swift in Sources */,
 				845D3BA42525D88A0038CCE1 /* UIViewController_Extension.swift in Sources */,
 				8424C324252CA2800049FBBD /* ChatListModel.swift in Sources */,
@@ -563,6 +570,7 @@
 				84894D4D25206A74000128BF /* MyBalloonView.swift in Sources */,
 				845D3BAC2525EB3C0038CCE1 /* UIAlertController_ Extension.swift in Sources */,
 				84AC55D7251F51A90037B66B /* ChatListViewController.swift in Sources */,
+				845D7070252DC14C0085FDE0 /* ChatRoomModel.swift in Sources */,
 				84933BA2252B651E00CE2390 /* SignUpModel.swift in Sources */,
 				84AC55A1251F4EE00037B66B /* SceneDelegate.swift in Sources */,
 				84988206252076240003E866 /* YourBalloonView.swift in Sources */,

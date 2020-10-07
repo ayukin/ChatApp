@@ -12,7 +12,7 @@ class ChatCreateViewController: UIViewController {
     
     @IBOutlet weak var chatCreateTableView: UITableView!
     
-    var window: UIWindow?
+    let chatCreatModel = ChatCreatModel()
     
     var closeBtn: UIBarButtonItem!
     var createBtn: UIBarButtonItem!
@@ -23,16 +23,14 @@ class ChatCreateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getUserInfoFromFirestore()
+        chatCreatModel.delegate = self
+        
+        // ユーザーの情報をFirebaseFirestoreから取得する処理
+        chatCreatModel.getUserInfoFromFirestore()
         
         // 画面UIについての処理
         setupUI()
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        getUserInfoFromFirestore()
-//    }
     
     // 画面UIについての処理
     func setupUI() {
@@ -46,34 +44,6 @@ class ChatCreateViewController: UIViewController {
         self.navigationItem.setRightBarButton(createBtn, animated: true)
     }
 
-    // ユーザーの情報をFirebaseFirestoreから取得する処理
-    private func getUserInfoFromFirestore() {
-        Firestore.firestore().collection("users").getDocuments { (snapshots, err) in
-            if let err = err {
-                print("ユーザー情報の取得に失敗しました。\(err)")
-                return
-            }
-            print("ユーザー情報の取得に成功しました。")
-            snapshots?.documents.forEach({ (snapshot) in
-                let dic = snapshot.data()
-                let user = User.init(dic: dic)
-                user.uid = snapshot.documentID
-                
-                // ユーザーのuidを取得
-                guard let uid = Auth.auth().currentUser?.uid else { return }
-                // ログインしているユーザーをチェック
-                if uid == snapshot.documentID {
-                    return
-                }
-                
-                self.users.append(user)
-                // chatCreateTableViewを更新
-                self.chatCreateTableView.reloadData()
-            })
-            
-        }
-    }
-
     // トークルーム作成処理
     @objc func createProject(sender: UIBarButtonItem){
         
@@ -85,20 +55,10 @@ class ChatCreateViewController: UIViewController {
         // 保存内容を定義する（辞書型）
         let docDate = ["members": members,
                        "laststMessageId": "",
-                       "createdAt": Timestamp()]
-            as [String : Any?]
+                       "createdAt": Timestamp()] as [String : Any?]
         
-        // FirebaseFirestoreへ保存
-        Firestore.firestore().collection("chatRooms").addDocument(data: docDate as [String : Any]) { (err) in
-            if let err = err {
-                print("ChatRoom情報の保存に失敗しました。\(err)")
-                
-                return
-            }
-            print("ChatRoom情報の保存に成功しました。")
-            self.dismiss(animated: true, completion: nil)
-        }
-        
+        // チャットルーム情報をFirebaseFirestoreへ保存
+        chatCreatModel.createChatRoom(docDate: docDate as [String : Any])
     }
     
     // モーダルを閉じる処理
@@ -134,3 +94,25 @@ extension ChatCreateViewController: UITableViewDelegate {
 
 }
 
+extension ChatCreateViewController: ChatCreatModelDelegate {
+    
+    // チャットルーム情報の登録が失敗した時の処理
+    func failedRegisterAction() {
+        // アラートの表示
+        let errorAlert = UIAlertController.errorAlert(message: "登録に失敗しました。")
+        self.present(errorAlert, animated: true, completion: nil)
+    }
+    
+    // ログインしているユーザー以外のユーザーの情報取得が完了した時の処理
+    func completedUserInfoAction(user: User) {
+        self.users.append(user)
+        // chatCreateTableViewを更新
+        self.chatCreateTableView.reloadData()
+    }
+    
+    // チャットルーム情報の保存が完了した時の処理
+    func completedRegisterChatRoomAction() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+}

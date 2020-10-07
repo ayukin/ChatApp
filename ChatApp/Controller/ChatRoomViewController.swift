@@ -12,6 +12,8 @@ class ChatRoomViewController: UIViewController {
     
     @IBOutlet weak var chatRoomTableView: UITableView!
     
+    let chatRoomModel = ChatRoomModel()
+    
     var user: User?
     var chatRoom: ChatRoom?
     private var messages = [Message]()
@@ -26,8 +28,7 @@ class ChatRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = ""
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        chatRoomModel.delegate = self
         
         getMessages()
         
@@ -71,38 +72,14 @@ class ChatRoomViewController: UIViewController {
     
     private func getMessages() {
         guard let chatRoomDocId = chatRoom?.documentId else { return }
-        
-        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").addSnapshotListener { (snapshots, err) in
-            if let err = err {
-                print("メッセージ情報の取得に失敗しました。\(err)")
-                return
-            }
-            // スナップショットの変更内容の種別（追加・更新・削除）を配列で取得する
-            snapshots?.documentChanges.forEach({ (documentChange) in
-                switch documentChange.type {
-                case .added:
-                    let dic = documentChange.document.data()
-                    let message = Message(dic: dic)
-                    self.messages.append(message)
-                    // ChatRoomTableViewを更新
-                    self.chatRoomTableView.reloadData()
-
-
-                case .modified:
-                    print("nothing to do")
-                case .removed:
-                    print("nothing to do")
-                }
-            })
-
-        }
+        // チャットルームのメッセージ情報をFirebaseFirestoreから取得する処理
+        chatRoomModel.getMessagesFromFirestore(chatRoomDocId: chatRoomDocId)
     }
     
 }
 
 extension ChatRoomViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(messages.count)
         return messages.count
     }
     
@@ -158,10 +135,6 @@ extension ChatRoomViewController: UITableViewDelegate {
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
     
     func chatTextViewSendAction(text: String) {
-//        messages.append(text)
-//        // ChatRoomTableViewを更新
-//        self.ChatRoomTableView.reloadData()
-        
         guard let chatRoomDocId = chatRoom?.documentId,
               let userName = user?.userName,
               let uid = Auth.auth().currentUser?.uid
@@ -173,14 +146,27 @@ extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
                        "message": text,
                        "createdAt": Timestamp()]
             as [String : Any?]
+        
+        // メッセージ情報をFirebaseFirestoreへ保存する処理
+        chatRoomModel.createMessageToFirestore(chatRoomDocId: chatRoomDocId, docData: docData as [String : Any])
+    }
+    
+}
 
-        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document().setData(docData as [String : Any]) { (err) in
-            if let err = err {
-                print("メッセージ情報の保存に失敗しました。\(err)")
-                return
-            }
-            print("メッセージ情報の保存に成功しました。")
-        }
+extension ChatRoomViewController: ChatRoomModelDelegate {
+    
+    // メッセージ情報の登録が失敗した時の処理
+    func failedRegisterAction() {
+        // アラートの表示
+        let errorAlert = UIAlertController.errorAlert(message: "登録に失敗しました。")
+        self.present(errorAlert, animated: true, completion: nil)
+    }
+    
+    // チャットルームのメッセージの情報取得が完了した時の処理
+    func completedMessagesAction(message: Message) {
+        self.messages.append(message)
+        // ChatRoomTableViewを更新
+        self.chatRoomTableView.reloadData()
     }
     
 }

@@ -13,7 +13,7 @@ protocol SignUpModelDelegate: class {
     func failedRegisterAction()
     func createImageToFirestorageAction()
     func createUserToFirestoreAction(fileName: String?)
-    func completedRegisterAction()
+    func completedRegisterUserInfoAction()
 }
 
 class SignUpModel {
@@ -63,7 +63,7 @@ class SignUpModel {
             }
             print("Firestoreへの保存に成功しました。")
             // ユーザー情報の登録が完了した時の処理
-            self.delegate?.completedRegisterAction()
+            self.delegate?.completedRegisterUserInfoAction()
         }
     }
 
