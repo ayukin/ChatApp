@@ -75,20 +75,40 @@ class ChatListModel {
         
         chatRoom.members.forEach { (memberUid) in
             if memberUid != uid {
-                Firestore.firestore().collection("users").document(memberUid).getDocument { (snapshot, err) in
+                Firestore.firestore().collection("users").document(memberUid).getDocument { (userSnapshot, err) in
                     if let err = err {
                         print("ユーザー情報の取得に失敗しました。\(err)")
                         return
                     }
                     print("ユーザー情報の取得に成功しました。")
-                    guard let dic = snapshot?.data() else { return }
+                    guard let dic = userSnapshot?.data() else { return }
                     
                     let user = User.init(dic: dic)
                     user.uid = documentChange.document.documentID
                     chatRoom.partnerUser = user
                     
-                    // チャットルームの情報取得が完了した時の処理
-                    self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+                    guard let chatRoomId = chatRoom.documentId else { return }
+                    let laststMessageId = chatRoom.laststMessageId
+                    
+                    if laststMessageId == "" {
+                        // チャットルームの情報取得が完了した時の処理
+                        self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+                        return
+                    }
+                    
+                    Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ?? "").getDocument { (messageSnapshot, err) in
+                        if let err = err {
+                            print("最新メッセージ情報の取得に失敗しました。\(err)")
+                            return
+                        }
+                        guard let dic = messageSnapshot?.data() else { return }
+                        let message = Message(dic: dic)
+                        
+                        chatRoom.laststMessage = message
+                        // チャットルームの情報取得が完了した時の処理
+                        self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+                    }
+                    
                 }
             }
         }

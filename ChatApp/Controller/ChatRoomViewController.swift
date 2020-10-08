@@ -59,7 +59,7 @@ class ChatRoomViewController: UIViewController {
         // セルが高さ以上になった場合バインバインという動きをするが、それを防ぐために大きな値を設定
         chatRoomTableView.estimatedRowHeight = 10000
         // Contentに合わせたセルの高さに設定
-        chatRoomTableView.rowHeight = UITableView.automaticDimension
+//        chatRoomTableView.rowHeight = UITableView.automaticDimension
         // 選択を不可にする
         chatRoomTableView.allowsSelection = false
         // テーブルビューをキーボードをまたぐように下にスワイプした時にキーボードを閉じる
@@ -75,7 +75,7 @@ class ChatRoomViewController: UIViewController {
         // チャットルームのメッセージ情報をFirebaseFirestoreから取得する処理
         chatRoomModel.getMessagesFromFirestore(chatRoomDocId: chatRoomDocId)
     }
-    
+        
 }
 
 extension ChatRoomViewController: UITableViewDataSource {
@@ -84,21 +84,30 @@ extension ChatRoomViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: "MyChat", for: indexPath) as? MyChatViewCell else {
-            return UITableViewCell()
+        
+        // ログインユーザーの判別をしてからCellを返す（クラッシュ保護できていない）
+        let uid = Auth.auth().currentUser?.uid
+        
+        if uid == messages[indexPath.row].uid {
+            // ログインユーザーのメッセージを返す処理
+            guard let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: "MyChat", for: indexPath) as? MyChatViewCell else {
+                return UITableViewCell()
+            }
+            // bound外のものを表示しない
+            cell.clipsToBounds = true
+            cell.message = messages[indexPath.row]
+            return cell
+            
+        } else {
+            // パートナーユーザーのメッセージを返す処理
+            guard let cell = chatRoomTableView.dequeueReusableCell(withIdentifier: "YourChat", for: indexPath) as? YourChatViewCell else {
+                return UITableViewCell()
+            }
+            // bound外のものを表示しない
+            cell.clipsToBounds = true
+            cell.message = messages[indexPath.row]
+            return cell
         }
-        cell.clipsToBounds = true // bound外のものを表示しない
-        cell.message = messages[indexPath.row]
-        return cell
-        
-//        guard let cell = ChatRoomTableView.dequeueReusableCell(withIdentifier: "YourChat", for: indexPath) as? YourChatViewCell else {
-//            return UITableViewCell()
-//        }
-//        cell.clipsToBounds = true // bound外のものを表示しない
-//        cell.updateCell(text: "こんにちは！あゆきです！", date: "2020/12/12", time: "12:12", image: "partnerImage")
-//        return cell
-//
-        
     }
     
 }
@@ -141,14 +150,17 @@ extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
               else { return }
         chatInputAccessoryView.removeText()
         
+        let messageId = NSUUID().uuidString
+        
         let docData = ["userName": userName,
                        "uid": uid,
+                       "profileImageName": user?.profileImageName,
                        "message": text,
                        "createdAt": Timestamp()]
             as [String : Any?]
         
         // メッセージ情報をFirebaseFirestoreへ保存する処理
-        chatRoomModel.createMessageToFirestore(chatRoomDocId: chatRoomDocId, docData: docData as [String : Any])
+        chatRoomModel.createMessageToFirestore(chatRoomDocId: chatRoomDocId, messageId: messageId, docData: docData as [String : Any])
     }
     
 }
@@ -165,6 +177,12 @@ extension ChatRoomViewController: ChatRoomModelDelegate {
     // チャットルームのメッセージの情報取得が完了した時の処理
     func completedMessagesAction(message: Message) {
         self.messages.append(message)
+        // 日付順に並べ替える処理
+        self.messages.sort { (m1, m2) -> Bool in
+            let m1Date = m1.createdAt.dateValue()
+            let m2Date = m2.createdAt.dateValue()
+            return m1Date < m2Date
+        }
         // ChatRoomTableViewを更新
         self.chatRoomTableView.reloadData()
     }

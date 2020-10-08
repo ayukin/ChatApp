@@ -6,13 +6,29 @@
 //
 
 import UIKit
+import FirebaseUI
 
 class YourChatViewCell: UITableViewCell {
     
-    @IBOutlet weak var yourImage: UIImageView!
+    @IBOutlet weak var yourImageView: UIImageView!
     @IBOutlet weak var yourTextView: UITextView!
     @IBOutlet weak var yourDateLabel: UILabel!
     @IBOutlet weak var yourTimeLabel: UILabel!
+    
+    var message: Message? {
+        didSet {
+            if let message = message {
+                yourTextView.text = message.message
+                yourDateLabel.text = Date().formatterDateStyleMedium(date: message.createdAt.dateValue())
+                yourTimeLabel.text = Date().formatterTimeStyleShort(date: message.createdAt.dateValue())
+
+                if message.profileImageName != "" {
+                    let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(message.profileImageName)
+                    yourImageView.sd_setImage(with: storageref)
+                }
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,30 +43,14 @@ class YourChatViewCell: UITableViewCell {
         self.yourDateLabel.textColor = UIColor.white
         self.yourTimeLabel.textColor = UIColor.white
         
-        self.yourImage.layer.masksToBounds = true
-        self.yourImage.layer.cornerRadius = 16
+        self.yourImageView.layer.masksToBounds = true
+        self.yourImageView.layer.cornerRadius = 16
         
         addSubview(YourBalloonView(frame: CGRect(x: yourTextView.frame.minX-5, y: yourTextView.frame.minY-10, width: 30, height: 30)))
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
     
-    func updateCell(text: String, date: String, time: String, image: String) {
-        self.yourTextView?.text = text
-        self.yourDateLabel?.text = date
-        self.yourTimeLabel?.text = time
-        self.yourImage?.image = UIImage(named: image)
-        
-//        let frame = CGSize(width: self.frame.width - 8, height: CGFloat.greatestFiniteMagnitude)
-//        var rect = self.myTextView.sizeThatFits(frame)
-//        if (rect.width < 30) {
-//            rect.width = 30
-//        }
-//        //テキストが短くても最小のビューの幅を30とする
-//        myTextViewWidthConstraint.constant = rect.width
-        
-    }
 }

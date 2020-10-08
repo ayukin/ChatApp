@@ -43,16 +43,29 @@ class ChatRoomModel {
         }
     }
     
-    func createMessageToFirestore(chatRoomDocId: String, docData: [String : Any]) {
+    func createMessageToFirestore(chatRoomDocId: String, messageId: String, docData: [String : Any]) {
         // メッセージ情報をFirebaseFirestoreへ保存する処理
-        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document().setData(docData as [String : Any]) { (err) in
+        Firestore.firestore().collection("chatRooms").document(chatRoomDocId).collection("messages").document(messageId).setData(docData as [String : Any]) { (err) in
             if let err = err {
                 print("メッセージ情報の保存に失敗しました。\(err)")
                 // メッセージ情報の保存が失敗した時の処理
                 self.delegate?.failedRegisterAction()
                 return
             }
-            print("メッセージ情報の保存に成功しました。")
+            
+            let laststMessageDate = [
+                "laststMessageId":  messageId
+            ]
+            
+            Firestore.firestore().collection("chatRooms").document(chatRoomDocId).updateData(laststMessageDate) { (err) in
+                if let err = err {
+                    print("最新メッセージ情報の保存に失敗しました。\(err)")
+                    // メッセージ情報の保存が失敗した時の処理
+                    self.delegate?.failedRegisterAction()
+                    return
+                }
+                print("メッセージ情報の保存に成功しました。")
+            }
         }
     }
     

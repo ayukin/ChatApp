@@ -67,7 +67,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="yourDateLabel" destination="LvA-7f-jn0" id="7Y5-0W-cSa"/>
-                <outlet property="yourImage" destination="bUM-eF-hdX" id="mXn-w6-lOF"/>
+                <outlet property="yourImageView" destination="bUM-eF-hdX" id="WrQ-82-S9v"/>
                 <outlet property="yourTextView" destination="ZFH-Ku-C85" id="Nlr-YR-8Rg"/>
                 <outlet property="yourTimeLabel" destination="PXe-G1-2BY" id="p4e-Jt-L5A"/>
             </connections>

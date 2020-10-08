@@ -17,8 +17,8 @@ class MyChatViewCell: UITableViewCell {
         didSet {
             if let message = message {
                 myTextView.text = message.message
-                myTimeLabel.text = "2020/12/12"
-                myDateLabel.text = "12:12"
+                myDateLabel.text = Date().formatterDateStyleMedium(date: message.createdAt.dateValue())
+                myTimeLabel.text = Date().formatterTimeStyleShort(date: message.createdAt.dateValue())
             }
         }
     }
@@ -36,26 +36,11 @@ class MyChatViewCell: UITableViewCell {
         self.myDateLabel.textColor = UIColor.white
         self.myTimeLabel.textColor = UIColor.white
         
-        addSubview(MyBalloonView(frame: CGRect(x: Int(frame.size.width + 65), y: 0, width: 30, height: 30)))
-
+        addSubview(MyBalloonView(frame: CGRect(x: Int(frame.size.width+67), y: Int(myTextView.frame.minY-10), width: 30, height: 30)))
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-//    func updateCell(text: String, date: String, time: String) {
-//        self.myTextView?.text = text
-//        self.myDateLabel?.text = date
-//        self.myTimeLabel?.text = time
         
-//        let frame = CGSize(width: self.frame.width - 8, height: CGFloat.greatestFiniteMagnitude)
-//        var rect = self.myTextView.sizeThatFits(frame)
-//        if (rect.width < 30) {
-//            rect.width = 30
-//        }
-//        //テキストが短くても最小のビューの幅を30とする
-//        myTextViewWidthConstraint.constant = rect.width
-//    }
-    
 }

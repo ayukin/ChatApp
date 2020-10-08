@@ -18,8 +18,8 @@ class ChatListTableViewCell: UITableViewCell {
     var chatRoom: ChatRoom? {
         didSet {
             partnerNameLabel.text = chatRoom?.partnerUser?.userName
-            messageLabel.text = "あいうえお"
-            dateLabel.text = "12:12"
+            messageLabel.text = chatRoom?.laststMessage?.message
+            dateLabel.text = Date().formatterTimeStyleShort(date: chatRoom?.laststMessage?.createdAt.dateValue() ?? Date())
             
             if chatRoom?.partnerUser?.profileImageName != "" {
                 let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(chatRoom?.partnerUser?.profileImageName ?? "")

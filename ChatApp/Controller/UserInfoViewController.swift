@@ -16,8 +16,6 @@ class UserInfoViewController: UIViewController {
     
     let userInfoModel = UserInfoModel()
     
-//    private var user: User?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
