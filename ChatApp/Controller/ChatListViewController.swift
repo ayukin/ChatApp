@@ -34,6 +34,8 @@ class ChatListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // ユーザーが現在存在するのかはチェック
+        chatListModel.checkLoggedInUser()
         // chatListTableViewを更新
         self.chatListTableView.reloadData()
     }
