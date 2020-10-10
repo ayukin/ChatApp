@@ -14,7 +14,6 @@ class ChatListViewController: UIViewController {
     
     let chatListModel = ChatListModel()
     
-//    private var emptyView: EmptyView!
     private var user: User?
     private var chatRooms = [ChatRoom]()
     
@@ -27,7 +26,6 @@ class ChatListViewController: UIViewController {
         chatListModel.getLoginUserInfoFromFirestore()
         // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
         chatListModel.getChatRoomsInfoFromFirestore()
-        
         // 画面UIについての処理
         setupUI()
     }
@@ -36,24 +34,16 @@ class ChatListViewController: UIViewController {
         super.viewWillAppear(animated)
         // ユーザーが現在存在するのかはチェック
         chatListModel.checkLoggedInUser()
+        // chatListTableViewを更新
+        self.chatListTableView.reloadData()
     }
     
     // 画面UIについての処理
     func setupUI() {
         self.navigationItem.title = "トーク一覧"
         self.chatListTableView.tableFooterView = UIView()
-//        emptyView = EmptyView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height))
-//        self.view.addSubview(emptyView)
     }
-    
-//    func emptyViewDisplayAction() {
-//        if chatRooms.count == 0 {
-//            emptyView.isHidden = false
-//        } else {
-//            emptyView.isHidden = true
-//        }
-//    }
-    
+        
     // ChatCreateViewControllerへ画面遷移
     @IBAction func createButtonAction(_ sender: Any) {
         let storyboard: UIStoryboard = UIStoryboard(name: "ChatCreate", bundle: nil)
@@ -95,11 +85,18 @@ extension ChatListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // セルの選択を解除
         tableView.deselectRow(at: indexPath, animated: true)
-        // ChatRoomViewControllerへ画面遷移
+        
+        // 遷移先のView（ChatRoomViewController）を取得
         let storyboard = UIStoryboard(name: "ChatRoom", bundle: nil)
         let chatRoomVC = storyboard.instantiateViewController(withIdentifier: "ChatRoomVC") as! ChatRoomViewController
+        // ChatRoomViewControllerへ情報を渡す
         chatRoomVC.user = user
         chatRoomVC.chatRoom = chatRooms[indexPath.row]
+        chatRoomVC.partnerName = chatRooms[indexPath.row].partnerUser?.userName
+        // ChatRoomViewControllerの「戻るボタン」をカスタマイズ
+        let backBarButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        self.navigationItem.backBarButtonItem = backBarButton
+        // ChatRoomViewControllerへ画面遷移
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
     }
 
@@ -122,6 +119,17 @@ extension ChatListViewController: ChatListModelDelegate {
         self.user = user
     }
     
+    // チャットルームの最新の情報取得が完了した時の処理
+    func laststMessageChangeAction(chatRoom: ChatRoom, message: Message) {
+        
+        for i in 0..<chatRooms.count {
+            if self.chatRooms[i].documentId == chatRoom.documentId {
+                chatRooms[i].laststMessage = message
+                return
+            }
+        }
+    }
+
     // チャットルームの情報取得が完了した時の処理
     func completedChatRoomsInfoAction(chatRoom: ChatRoom) {
         self.chatRooms.append(chatRoom)

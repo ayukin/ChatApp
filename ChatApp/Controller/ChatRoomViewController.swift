@@ -16,11 +16,19 @@ class ChatRoomViewController: UIViewController {
     
     var user: User?
     var chatRoom: ChatRoom?
+    var partnerName: String?
+    
     private var messages = [Message]()
+    private let accessoryHeight: CGFloat = 60
+    private let tableViewContentInset: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+    private let tableViewScrollIndicatorInsets: UIEdgeInsets = .init(top: 60, left: 0, bottom: 0, right: 0)
+    private var safeAreaBottom: CGFloat {
+        self.view.safeAreaInsets.bottom
+    }
     
     private lazy var chatInputAccessoryView: ChatInputAccessoryView = {
         let view = ChatInputAccessoryView()
-        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: 60)
+        view.frame = .init(x: 0, y: 0, width: view.frame.width, height: accessoryHeight)
         view.delegate = self
         return view
     }()
@@ -30,11 +38,67 @@ class ChatRoomViewController: UIViewController {
         
         chatRoomModel.delegate = self
         
+        // チャットルームのメッセージ情報を取得する処理
         getMessages()
         
-        // 画面UIについての処理
+        // 画面UIのセットアップ処理
         setupUI()
+        // ChatRoomTableViewのセットアップ処理
+        setupChatRoomTableView()
+        // キーボードイベントのセットアップ処理
+        setupNotification()
+    }
+    
+    // 画面UIのセットアップ処理
+    func setupUI() {
+        self.navigationItem.title = partnerName
+    }
+    
+    // ChatRoomTableViewのセットアップ処理
+    func setupChatRoomTableView() {
+        chatRoomTableView.backgroundColor = UIColor(named: "lineSkyBlue")
+        // セルが高さ以上になった場合バインバインという動きをするが、それを防ぐために大きな値を設定
+        chatRoomTableView.estimatedRowHeight = 10000
+        // Contentに合わせたセルの高さに設定
+        chatRoomTableView.rowHeight = UITableView.automaticDimension
+        // 選択を不可にする
+        chatRoomTableView.allowsSelection = false
+        // テーブルビューをキーボードをまたぐように下にスワイプした時にキーボードを閉じる
+        chatRoomTableView.keyboardDismissMode = .interactive
+        // 反転させる（画面下をTOPにするイメージ）
+        chatRoomTableView.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
         
+        chatRoomTableView.contentInset = tableViewContentInset
+        chatRoomTableView.scrollIndicatorInsets = tableViewScrollIndicatorInsets
+        
+        chatRoomTableView.register(UINib(nibName: "MyChatViewCell", bundle: nil), forCellReuseIdentifier: "MyChat")
+        chatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
+    }
+    
+    // キーボードイベントのセットアップ処理
+    func setupNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // キーボードが表示される際の処理
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if keyboardFrame.height <= accessoryHeight { return }
+            let top = keyboardFrame.height - safeAreaBottom
+            var moveY = -(top - chatRoomTableView.contentOffset.y)
+            if chatRoomTableView.contentOffset.y != -60 { moveY += 60 }
+            let contentInset = UIEdgeInsets(top: top, left: 0, bottom: 0, right: 0)
+            chatRoomTableView.contentInset = contentInset
+            chatRoomTableView.scrollIndicatorInsets = contentInset
+            chatRoomTableView.contentOffset = CGPoint(x: 0, y: moveY)
+        }
+    }
+    
+    // キーボードと閉じる際の処理
+    @objc func keyboardWillHide(notification: Notification) {
+        chatRoomTableView.contentInset = tableViewContentInset
+        chatRoomTableView.scrollIndicatorInsets = tableViewScrollIndicatorInsets
     }
     
     // chatInputAccessoryViewをセット
@@ -48,27 +112,7 @@ class ChatRoomViewController: UIViewController {
     override var canBecomeFirstResponder: Bool {
         return true
     }
-    
-    // 画面UIについての処理
-    func setupUI() {
-        
-        self.navigationItem.title = ""
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        chatRoomTableView.backgroundColor = UIColor(named: "lineSkyBlue")
-        // セルが高さ以上になった場合バインバインという動きをするが、それを防ぐために大きな値を設定
-        chatRoomTableView.estimatedRowHeight = 10000
-        // Contentに合わせたセルの高さに設定
-//        chatRoomTableView.rowHeight = UITableView.automaticDimension
-        // 選択を不可にする
-        chatRoomTableView.allowsSelection = false
-        // テーブルビューをキーボードをまたぐように下にスワイプした時にキーボードを閉じる
-        chatRoomTableView.keyboardDismissMode = .interactive
-        
-        chatRoomTableView.register(UINib(nibName: "MyChatViewCell", bundle: nil), forCellReuseIdentifier: "MyChat")
-        chatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
-        
-    }
+
     
     private func getMessages() {
         guard let chatRoomDocId = chatRoom?.documentId else { return }
@@ -95,6 +139,8 @@ extension ChatRoomViewController: UITableViewDataSource {
             }
             // bound外のものを表示しない
             cell.clipsToBounds = true
+            // 反転してCellの表示を戻す
+            cell.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
             cell.message = messages[indexPath.row]
             return cell
             
@@ -105,6 +151,8 @@ extension ChatRoomViewController: UITableViewDataSource {
             }
             // bound外のものを表示しない
             cell.clipsToBounds = true
+            // 反転してCellの表示を戻す
+            cell.transform = CGAffineTransform(a: 1, b: 0, c: 0, d: -1, tx: 0, ty: 0)
             cell.message = messages[indexPath.row]
             return cell
         }
@@ -120,26 +168,6 @@ extension ChatRoomViewController: UITableViewDelegate {
     }
 
 }
-
-//extension ChatRoomViewController: UITextFieldDelegate {
-//    // 入力開始時の処理
-//    func textFieldDidBeginEditing(_ textField: UITextField) {
-//
-//    }
-//    // textFieldの内容をリアルタイムで反映させる
-//    func textFieldDidChangeSelection(_ textField: UITextField) {
-//
-//    }
-//    // リターンキーを押したときキーボードが閉じる
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
-//    // 入力終了時の処理（フォーカスがはずれる）
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        textField.resignFirstResponder()
-//    }
-//}
 
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
     
@@ -181,7 +209,7 @@ extension ChatRoomViewController: ChatRoomModelDelegate {
         self.messages.sort { (m1, m2) -> Bool in
             let m1Date = m1.createdAt.dateValue()
             let m2Date = m2.createdAt.dateValue()
-            return m1Date < m2Date
+            return m1Date > m2Date
         }
         // ChatRoomTableViewを更新
         self.chatRoomTableView.reloadData()

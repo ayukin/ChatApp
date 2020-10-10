@@ -12,6 +12,7 @@ import Firebase
 protocol ChatListModelDelegate: class {
     func presentToLoginVC()
     func completedLoginUserInfoAction(dic: [String: Any])
+    func laststMessageChangeAction(chatRoom: ChatRoom, message: Message)
     func completedChatRoomsInfoAction(chatRoom: ChatRoom)
 }
 
@@ -22,8 +23,16 @@ class ChatListModel {
     
     func checkLoggedInUser() {
         // ユーザーが現在存在するのかはチェック
-        if Auth.auth().currentUser?.uid == nil {
-            self.delegate?.presentToLoginVC()
+//        if Auth.auth().currentUser?.uid == nil {
+//            self.delegate?.presentToLoginVC()
+//        }
+        
+        // ユーザーが現在存在するのかはチェック
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if user == nil {
+                self.delegate?.presentToLoginVC()
+                return
+            }
         }
     }
     
@@ -55,7 +64,7 @@ class ChatListModel {
                 case .added:
                     self.handleAddedDocumentChange(documentChange: documentChange)
                 case .modified:
-                    print("nothing to do")
+                    self.modifiedLaststMessageChange(documentChange: documentChange)
                 case .removed:
                     print("nothing to do")
                 }
@@ -86,32 +95,51 @@ class ChatListModel {
                     let user = User.init(dic: dic)
                     user.uid = documentChange.document.documentID
                     chatRoom.partnerUser = user
-                    
-                    guard let chatRoomId = chatRoom.documentId else { return }
-                    let laststMessageId = chatRoom.laststMessageId
-                    
-                    if laststMessageId == "" {
-                        // チャットルームの情報取得が完了した時の処理
-                        self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
-                        return
-                    }
-                    
-                    Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ?? "").getDocument { (messageSnapshot, err) in
-                        if let err = err {
-                            print("最新メッセージ情報の取得に失敗しました。\(err)")
-                            return
-                        }
-                        guard let dic = messageSnapshot?.data() else { return }
-                        let message = Message(dic: dic)
-                        
-                        chatRoom.laststMessage = message
-                        // チャットルームの情報取得が完了した時の処理
-                        self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
-                    }
-                    
                 }
             }
         }
-    }
+        
+        guard let chatRoomId = chatRoom.documentId else { return }
+        let laststMessageId = chatRoom.laststMessageId
 
+        if laststMessageId == "" {
+            // チャットルームの情報取得が完了した時の処理
+            self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+            return
+        }
+
+        Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ?? "").getDocument { (messageSnapshot, err) in
+            if let err = err {
+                print("最新メッセージ情報の取得に失敗しました。\(err)")
+                return
+            }
+            guard let dic = messageSnapshot?.data() else { return }
+            let message = Message(dic: dic)
+
+            chatRoom.laststMessage = message
+            // チャットルームの情報取得が完了した時の処理
+            self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+        }
+
+    }
+    
+    func modifiedLaststMessageChange(documentChange: DocumentChange) {
+        let dic = documentChange.document.data()
+        let chatRoom = ChatRoom.init(dic: dic)
+        chatRoom.documentId = documentChange.document.documentID
+        guard let chatRoomId = chatRoom.documentId else { return }
+        guard let laststMessageId = chatRoom.laststMessageId else { return }
+
+        Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ).getDocument { (messageSnapshot, err) in
+            if let err = err {
+                print("最新メッセージ情報の取得に失敗しました。\(err)")
+                return
+            }
+            guard let dic = messageSnapshot?.data() else { return }
+            let message = Message(dic: dic)
+            // チャットルームの最新の情報取得が完了した時の処理
+            self.delegate?.laststMessageChangeAction(chatRoom: chatRoom, message: message)
+        }
+    }
+    
 }
