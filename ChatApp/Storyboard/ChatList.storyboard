@@ -94,7 +94,7 @@
                                         <connections>
                                             <outlet property="dateLabel" destination="KXK-yN-ND7" id="U8U-by-acw"/>
                                             <outlet property="messageLabel" destination="I0X-ip-XXp" id="dwo-Tc-Kug"/>
-                                            <outlet property="partnerImage" destination="fF7-N7-OXQ" id="0CI-wb-LmU"/>
+                                            <outlet property="partnerImageView" destination="fF7-N7-OXQ" id="I0p-VR-Lyx"/>
                                             <outlet property="partnerNameLabel" destination="hy0-ZL-cQJ" id="a2E-f1-rh8"/>
                                         </connections>
                                     </tableViewCell>

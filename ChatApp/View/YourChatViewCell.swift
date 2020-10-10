@@ -18,14 +18,13 @@ class YourChatViewCell: UITableViewCell {
     var message: Message? {
         didSet {
             if let message = message {
-                yourTextView.text = message.message
-                yourDateLabel.text = Date().formatterDateStyleMedium(date: message.createdAt.dateValue())
-                yourTimeLabel.text = Date().formatterTimeStyleShort(date: message.createdAt.dateValue())
-
                 if message.profileImageName != "" {
                     let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(message.profileImageName)
                     yourImageView.sd_setImage(with: storageref)
                 }
+                yourTextView.text = message.message
+                yourDateLabel.text = Date().formatterDateStyleMedium(date: message.createdAt.dateValue())
+                yourTimeLabel.text = Date().formatterTimeStyleShort(date: message.createdAt.dateValue())
             }
         }
     }

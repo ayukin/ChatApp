@@ -27,7 +27,6 @@ class ChatCreateViewController: UIViewController {
         
         // ユーザーの情報をFirebaseFirestoreから取得する処理
         chatCreatModel.getUserInfoFromFirestore()
-        
         // 画面UIについての処理
         setupUI()
     }
@@ -91,7 +90,7 @@ extension ChatCreateViewController: UITableViewDelegate {
         let user = users[indexPath.row]
         self.selectedUser = user
     }
-
+    
 }
 
 extension ChatCreateViewController: ChatCreatModelDelegate {

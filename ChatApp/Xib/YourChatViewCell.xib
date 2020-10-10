@@ -54,8 +54,8 @@
                     <constraint firstItem="bUM-eF-hdX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="13P-h8-eju"/>
                     <constraint firstAttribute="bottom" secondItem="PXe-G1-2BY" secondAttribute="bottom" constant="10" id="P5K-wa-7Yt"/>
                     <constraint firstItem="PXe-G1-2BY" firstAttribute="top" secondItem="LvA-7f-jn0" secondAttribute="bottom" constant="2" id="R9C-MH-7lL"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PXe-G1-2BY" secondAttribute="trailing" constant="53" id="TSQ-Bx-08u"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LvA-7f-jn0" secondAttribute="trailing" constant="20" symbolic="YES" id="Umi-6Z-ml0"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="PXe-G1-2BY" secondAttribute="trailing" constant="40" id="TSQ-Bx-08u"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LvA-7f-jn0" secondAttribute="trailing" constant="16" id="Umi-6Z-ml0"/>
                     <constraint firstItem="bUM-eF-hdX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="Ylk-NJ-MDu"/>
                     <constraint firstItem="PXe-G1-2BY" firstAttribute="leading" secondItem="ZFH-Ku-C85" secondAttribute="trailing" constant="8" symbolic="YES" id="bLh-8x-sgr"/>
                     <constraint firstItem="ZFH-Ku-C85" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="cMa-1O-dac"/>

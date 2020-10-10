@@ -51,7 +51,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="partnerImage" destination="Odc-Q7-2od" id="bYk-WY-hdK"/>
+                                            <outlet property="partnerImageView" destination="Odc-Q7-2od" id="E8e-cs-WO1"/>
                                             <outlet property="partnerNameLabel" destination="XuW-5C-4w6" id="oMw-aP-eDo"/>
                                         </connections>
                                     </tableViewCell>

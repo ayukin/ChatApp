@@ -13,26 +13,20 @@ protocol ChatListModelDelegate: class {
     func presentToLoginVC()
     func completedLoginUserInfoAction(dic: [String: Any])
     func laststMessageChangeAction(chatRoom: ChatRoom, message: Message)
-    func completedChatRoomsInfoAction(chatRoom: ChatRoom)
+    func completedChatRoomsInfoAction(chatRooms: [ChatRoom])
 }
 
 class ChatListModel {
+    
+    var chatRooms = [ChatRoom]()
     
     // delegateはメモリリークを回避するためweak参照する
     weak var delegate: ChatListModelDelegate?
     
     func checkLoggedInUser() {
         // ユーザーが現在存在するのかはチェック
-//        if Auth.auth().currentUser?.uid == nil {
-//            self.delegate?.presentToLoginVC()
-//        }
-        
-        // ユーザーが現在存在するのかはチェック
-        Auth.auth().addStateDidChangeListener { (auth, user) in
-            if user == nil {
-                self.delegate?.presentToLoginVC()
-                return
-            }
+        if Auth.auth().currentUser?.uid == nil {
+            self.delegate?.presentToLoginVC()
         }
     }
     
@@ -70,6 +64,7 @@ class ChatListModel {
                 }
             })
         }
+        
     }
     
     func handleAddedDocumentChange(documentChange: DocumentChange) {
@@ -104,7 +99,9 @@ class ChatListModel {
 
         if laststMessageId == "" {
             // チャットルームの情報取得が完了した時の処理
-            self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+            self.chatRooms.append(chatRoom)
+            // チャットルームの情報取得が完了した時の処理
+            self.delegate?.completedChatRoomsInfoAction(chatRooms: self.chatRooms)
             return
         }
 
@@ -118,7 +115,9 @@ class ChatListModel {
 
             chatRoom.laststMessage = message
             // チャットルームの情報取得が完了した時の処理
-            self.delegate?.completedChatRoomsInfoAction(chatRoom: chatRoom)
+            self.chatRooms.append(chatRoom)
+            // チャットルームの情報取得が完了した時の処理
+            self.delegate?.completedChatRoomsInfoAction(chatRooms: self.chatRooms)
         }
 
     }

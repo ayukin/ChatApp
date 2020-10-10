@@ -40,7 +40,6 @@ class ChatRoomViewController: UIViewController {
         
         // チャットルームのメッセージ情報を取得する処理
         getMessages()
-        
         // 画面UIのセットアップ処理
         setupUI()
         // ChatRoomTableViewのセットアップ処理
@@ -113,7 +112,6 @@ class ChatRoomViewController: UIViewController {
         return true
     }
 
-    
     private func getMessages() {
         guard let chatRoomDocId = chatRoom?.documentId else { return }
         // チャットルームのメッセージ情報をFirebaseFirestoreから取得する処理
@@ -161,12 +159,10 @@ extension ChatRoomViewController: UITableViewDataSource {
 }
 
 extension ChatRoomViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // セルの選択を解除
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
 }
 
 extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
@@ -202,17 +198,11 @@ extension ChatRoomViewController: ChatRoomModelDelegate {
         self.present(errorAlert, animated: true, completion: nil)
     }
     
-    // チャットルームのメッセージの情報取得が完了した時の処理
-    func completedMessagesAction(message: Message) {
-        self.messages.append(message)
-        // 日付順に並べ替える処理
-        self.messages.sort { (m1, m2) -> Bool in
-            let m1Date = m1.createdAt.dateValue()
-            let m2Date = m2.createdAt.dateValue()
-            return m1Date > m2Date
-        }
+    // 格納したメッセージの並べ替えが完了した時の処理
+    func completedMessagesAction(messages: [Message]) {
+        self.messages = messages
         // ChatRoomTableViewを更新
         self.chatRoomTableView.reloadData()
     }
-    
+
 }

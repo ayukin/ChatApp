@@ -67,10 +67,8 @@ class ChatInputAccessoryView: UIView {
     func setFromXib() {
         let nib = UINib.init(nibName: "ChatInputAccessoryView", bundle: nil)
         guard let view = nib.instantiate(withOwner: self, options: nil).first as? UIView else { return }
-        
         view.frame = self.bounds
         view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        
         self.addSubview(view)
     }
     
@@ -88,7 +86,6 @@ class ChatInputAccessoryView: UIView {
 }
 
 extension ChatInputAccessoryView: UITextViewDelegate {
-
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.isEmpty {
             sendButton.isEnabled = false
