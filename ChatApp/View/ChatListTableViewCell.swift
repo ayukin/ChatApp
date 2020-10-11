@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseUI
 
 class ChatListTableViewCell: UITableViewCell {
@@ -17,8 +18,8 @@ class ChatListTableViewCell: UITableViewCell {
     
     var chatRoom: ChatRoom? {
         didSet {
+            print(chatRoom?.partnerUser?.profileImageName ?? "")
             if chatRoom?.partnerUser?.profileImageName != "" {
-                print(chatRoom?.partnerUser?.profileImageName ?? "")
                 let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(chatRoom?.partnerUser?.profileImageName ?? "")
                 partnerImageView.sd_setImage(with: storageref)
             }

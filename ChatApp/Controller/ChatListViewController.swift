@@ -24,18 +24,12 @@ class ChatListViewController: UIViewController {
         
         // ユーザーが現在存在するのかはチェック
         chatListModel.checkLoggedInUser()
-        // ログインユーザーの情報をFirebaseFirestoreから取得する処理
-        chatListModel.getLoginUserInfoFromFirestore()
-        // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
-        chatListModel.getChatRoomsInfoFromFirestore()
         // 画面UIについての処理
         setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // ユーザーが現在存在するのかはチェック
-        chatListModel.checkLoggedInUser()
         // chatListTableViewを更新
         self.chatListTableView.reloadData()
     }
@@ -105,6 +99,11 @@ extension ChatListViewController: UITableViewDelegate {
 }
 
 extension ChatListViewController: ChatListModelDelegate {
+    
+    // ログイン状態の処理
+    func loggedInUserAction() {
+        
+    }
     
     // LoginViewControllerへ画面遷移
     func presentToLoginVC() {

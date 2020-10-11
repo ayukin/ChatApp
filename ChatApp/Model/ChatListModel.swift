@@ -11,6 +11,7 @@ import Firebase
 //delegateはweak参照したいため、classを継承する
 protocol ChatListModelDelegate: class {
     func presentToLoginVC()
+    func loggedInUserAction()
     func completedLoginUserInfoAction(dic: [String: Any])
     func laststMessageChangeAction(chatRoom: ChatRoom, message: Message)
     func completedChatRoomsInfoAction(chatRooms: [ChatRoom])
@@ -24,10 +25,27 @@ class ChatListModel {
     weak var delegate: ChatListModelDelegate?
     
     func checkLoggedInUser() {
-        // ユーザーが現在存在するのかはチェック
-        if Auth.auth().currentUser?.uid == nil {
-            self.delegate?.presentToLoginVC()
+        
+        // ユーザーがログイン状態かログアウト状態かチェック
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if user == nil {
+                // ログアウト状態の処理
+                self.delegate?.presentToLoginVC()
+                return
+            }
+            DispatchQueue.global().async {
+                // ログインユーザーの情報をFirebaseFirestoreから取得する処理
+                self.getLoginUserInfoFromFirestore()
+                // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
+                self.getChatRoomsInfoFromFirestore()
+
+                DispatchQueue.main.async {
+                    // ログイン状態の処理
+                    self.delegate?.loggedInUserAction()
+                }
+            }
         }
+        
     }
     
     func getLoginUserInfoFromFirestore() {
