@@ -18,7 +18,9 @@ class YourChatViewCell: UITableViewCell {
     var message: Message? {
         didSet {
             if let message = message {
-                if message.profileImageName != "" {
+                if message.profileImageName == "blankimage" {
+                    yourImageView.image = UIImage(named: "blankimage")
+                } else {
                     let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(message.profileImageName)
                     yourImageView.sd_setImage(with: storageref)
                 }

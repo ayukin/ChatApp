@@ -85,7 +85,7 @@ class SignUpViewController: UIViewController {
         } else {
             print("プロフィール画像が設定されていないため、デフォルト画像になります。")
             // User情報をFirebaseFirestoreへ保存
-            self.createUserToFirestore(profileImageName: nil)
+            self.createUserToFirestore(profileImageName: "blankimage")
         }
         
     }

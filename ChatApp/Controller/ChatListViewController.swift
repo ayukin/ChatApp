@@ -99,12 +99,7 @@ extension ChatListViewController: UITableViewDelegate {
 }
 
 extension ChatListViewController: ChatListModelDelegate {
-    
-    // ログイン状態の処理
-    func loggedInUserAction() {
         
-    }
-    
     // LoginViewControllerへ画面遷移
     func presentToLoginVC() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
