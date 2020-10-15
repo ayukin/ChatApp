@@ -36,7 +36,8 @@ class MyChatViewCell: UITableViewCell {
         self.myDateLabel.textColor = UIColor.white
         self.myTimeLabel.textColor = UIColor.white
         
-        addSubview(MyBalloonView(frame: CGRect(x: Int(frame.size.width+67), y: Int(myTextView.frame.minY-10), width: 30, height: 30)))
+        addSubview(MyBalloonView(frame: CGRect(x: Int(UIScreen.main.bounds.width-27), y: Int(myTextView.frame.minY-10), width: 30, height: 30)))
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -15,6 +15,7 @@ protocol ChatInputAccessoryViewDelegate: class {
 class ChatInputAccessoryView: UIView {
     
     @IBOutlet weak var chatTextView: UITextView!
+    @IBOutlet weak var chatTextViewHeight: NSLayoutConstraint!
     @IBOutlet weak var sendButton: UIButton!
     
     // delegateはメモリリークを回避するためweak参照する
@@ -34,6 +35,7 @@ class ChatInputAccessoryView: UIView {
     // 画面UIについての処理
     func setupUI() {
         chatTextView.delegate = self
+        chatTextView.isScrollEnabled = false
         chatTextView.layer.masksToBounds = true
         chatTextView.layer.cornerRadius = 18.5
         chatTextView.layer.borderColor = UIColor.lightGray.cgColor
@@ -92,5 +94,6 @@ extension ChatInputAccessoryView: UITextViewDelegate {
         } else {
             sendButton.isEnabled = true
         }
+        
     }
 }

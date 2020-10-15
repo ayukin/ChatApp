@@ -47,7 +47,8 @@ class YourChatViewCell: UITableViewCell {
         self.yourImageView.layer.masksToBounds = true
         self.yourImageView.layer.cornerRadius = 16
         
-        addSubview(YourBalloonView(frame: CGRect(x: yourTextView.frame.minX-5, y: yourTextView.frame.minY-10, width: 30, height: 30)))
+        addSubview(YourBalloonView(frame: CGRect(x: 47, y: Int(yourTextView.frame.minY)-10, width: 30, height: 30)))
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

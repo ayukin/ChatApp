@@ -33,7 +33,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MZE-Ah-LCI">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="714"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ods-6J-0ig" id="eyC-Vd-CPU"/>
@@ -48,7 +48,7 @@
                             <constraint firstItem="MZE-Ah-LCI" firstAttribute="top" secondItem="IpI-OH-je2" secondAttribute="top" id="fKa-1n-mJD"/>
                             <constraint firstItem="MZE-Ah-LCI" firstAttribute="leading" secondItem="IpI-OH-je2" secondAttribute="leading" id="h6E-A5-Cyz"/>
                             <constraint firstItem="MZE-Ah-LCI" firstAttribute="trailing" secondItem="IpI-OH-je2" secondAttribute="trailing" id="kgU-zW-bpf"/>
-                            <constraint firstItem="IpI-OH-je2" firstAttribute="bottom" secondItem="MZE-Ah-LCI" secondAttribute="bottom" id="ngJ-E3-NZA"/>
+                            <constraint firstItem="IpI-OH-je2" firstAttribute="bottom" secondItem="MZE-Ah-LCI" secondAttribute="bottom" constant="60" id="ngJ-E3-NZA"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wvx-VR-qF5"/>

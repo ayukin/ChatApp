@@ -52,7 +52,7 @@ class ChatRoomModel {
         messages.sort { (m1, m2) -> Bool in
             let m1Date = m1.createdAt.dateValue()
             let m2Date = m2.createdAt.dateValue()
-            return m1Date > m2Date
+            return m1Date < m2Date
         }
         // 格納したメッセージの並べ替えが完了した時の処理
         self.delegate?.completedMessagesAction(messages: messages)

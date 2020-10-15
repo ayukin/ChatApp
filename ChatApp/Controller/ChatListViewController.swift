@@ -129,6 +129,7 @@ extension ChatListViewController: ChatListModelDelegate {
     // チャットルームの情報取得が完了した時の処理
     func completedChatRoomsInfoAction(chatRooms: [ChatRoom]) {
         self.chatRooms = chatRooms
+        print(chatRooms[0].partnerUser?.profileImageName ?? "")
         // chatListTableViewを更新
         self.chatListTableView.reloadData()
     }
