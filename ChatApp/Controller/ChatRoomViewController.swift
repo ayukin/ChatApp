@@ -7,7 +7,6 @@
 
 import UIKit
 import Firebase
-import IQKeyboardManagerSwift
 
 class ChatRoomViewController: UIViewController {
     
@@ -38,7 +37,6 @@ class ChatRoomViewController: UIViewController {
         super.viewDidLoad()
         
         chatRoomModel.delegate = self
-        IQKeyboardManager.shared.enable = false
         
         // チャットルームのメッセージ情報を取得する処理
         getMessages()
