@@ -1,6 +1,6 @@
 # ChatApp（LINEクローンアプリ）
 
-簡単なgif
+![output 0 15 36](https://user-images.githubusercontent.com/64976657/97025452-0b5dbb00-1593-11eb-81de-3173d785f5d6.gif)
 
 
 ## 動作環境
