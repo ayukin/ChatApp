@@ -59,13 +59,14 @@ class UserInfoViewController: UIViewController {
 }
 
 extension UserInfoViewController: UserInfoModelDelegate {
-    
     // ログインユーザーの情報取得が完了した時の処理
     func completedLoginUserInfoAction(dic: [String : Any]) {
         let user = User.init(dic: dic)
         self.userNameLabel.text = user.userName
         self.userEmailLabel.text = user.email
-        if user.profileImageName != "" {
+        if user.profileImageName == "blankimage" {
+            userImageView.image = UIImage(named: "blankimage")
+        } else {
             let storageref = Storage.storage().reference(forURL: "gs://chatapp-78f74.appspot.com").child("profile_image").child(user.profileImageName)
             userImageView.sd_setImage(with: storageref)
         }

@@ -94,7 +94,6 @@ extension ChatCreateViewController: UITableViewDelegate {
 }
 
 extension ChatCreateViewController: ChatCreatModelDelegate {
-    
     // チャットルーム情報の登録が失敗した時の処理
     func failedRegisterAction() {
         // アラートの表示

@@ -15,7 +15,6 @@ protocol LoginModelDelegate: class {
 }
 
 class LoginModel {
-    
     // delegateはメモリリークを回避するためweak参照する
     weak var delegate: LoginModelDelegate?
     
@@ -23,12 +22,11 @@ class LoginModel {
         // FirebaseAuthへログイン
         Auth.auth().signIn(withEmail: email, password: password) { (res, err) in
             if let err = err {
-                print("ログイン情報の取得に失敗しました。\(err)")
+                print(err)
                 // ユーザー情報の登録が失敗した時の処理
                 self.delegate?.failedRegisterAction()
                 return
             }
-            print("ログインに成功しました。")
             // ユーザーのログインが完了した時の処理
             self.delegate?.completedLoginAction()
         }

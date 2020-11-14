@@ -54,7 +54,6 @@ class LoginViewController: UIViewController {
         
         // FirebaseAuthへログイン
         loginModel.loginUser(email: email, password: password)
-        
     }
     
     // SignUpViewControllerへ画面遷移
@@ -81,7 +80,6 @@ extension LoginViewController: UITextFieldDelegate {
             loginButton.backgroundColor = UIColor(named: "lineGreen")
         }
     }
-    
     // textField以外の部分を押したときキーボードが閉じる
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
@@ -89,7 +87,6 @@ extension LoginViewController: UITextFieldDelegate {
 }
 
 extension LoginViewController: LoginModelDelegate {
-    
     // ユーザーがログインに失敗した時の処理
     func failedRegisterAction() {
         // アクティビティインディケータのアニメーション停止

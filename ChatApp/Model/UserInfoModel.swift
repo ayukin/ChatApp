@@ -14,7 +14,6 @@ protocol UserInfoModelDelegate: class {
 }
 
 class UserInfoModel {
-    
     // delegateはメモリリークを回避するためweak参照する
     weak var delegate: UserInfoModelDelegate?
     
@@ -23,10 +22,9 @@ class UserInfoModel {
         // ログインユーザーの情報をFirebaseFirestoreから取得する処理
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("ログインユーザー情報の取得に失敗しました。\(err)")
+                print(err)
                 return
             }
-            print("ログインユーザー情報の取得に成功しました。")
             guard let dic = snapshot?.data() else { return }
             // ログインユーザーの情報取得が完了した時の処理
             self.delegate?.completedLoginUserInfoAction(dic: dic)

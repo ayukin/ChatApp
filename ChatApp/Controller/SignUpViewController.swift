@@ -64,7 +64,6 @@ class SignUpViewController: UIViewController {
         
         // FirebaseAuthへ保存
         signUpModel.createUser(email: email, password: password)
-                
     }
     
     // loginViewControllerへ画面遷移
@@ -78,16 +77,13 @@ class SignUpViewController: UIViewController {
         if let image = self.profileImageButton.imageView?.image {
             let uploadImage = image.jpegData(compressionQuality: 0.5)
             let fileName = NSUUID().uuidString
-            
             // FirebaseStorageへ保存
             signUpModel.creatrImage(fileName: fileName, uploadImage: uploadImage!)
-            
         } else {
             print("プロフィール画像が設定されていないため、デフォルト画像になります。")
             // User情報をFirebaseFirestoreへ保存
             self.createUserToFirestore(profileImageName: "blankimage")
         }
-        
     }
     
     // User情報をFirebaseFirestoreへ保存する処理
@@ -97,7 +93,7 @@ class SignUpViewController: UIViewController {
               let uid = Auth.auth().currentUser?.uid,
               let userName = self.userNameTextField.text
         else { return }
-        
+
         // 保存内容を定義する（辞書型）
         let docData = ["email": email,
                        "userName": userName,
@@ -147,7 +143,6 @@ extension SignUpViewController: UITextFieldDelegate {
 }
 
 extension SignUpViewController: SignUpModelDelegate {
-        
     // ユーザー情報の登録が失敗した時の処理
     func failedRegisterAction() {
         // アクティビティインディケータのアニメーション停止

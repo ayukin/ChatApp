@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import IQKeyboardManagerSwift
 
 class ChatRoomViewController: UIViewController {
     
@@ -36,6 +37,7 @@ class ChatRoomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        IQKeyboardManager.shared.enable = false
         chatRoomModel.delegate = self
         
         // チャットルームのメッセージ情報を取得する処理
@@ -71,6 +73,8 @@ class ChatRoomViewController: UIViewController {
         chatRoomTableView.register(UINib(nibName: "YourChatViewCell", bundle: nil), forCellReuseIdentifier: "YourChat")
     }
     
+    
+    
     // キーボードイベントのセットアップ処理
     func setupNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -92,9 +96,7 @@ class ChatRoomViewController: UIViewController {
             if chatRoomTableView.contentOffset.y >= (chatRoomTableView.contentSize.height - chatRoomTableView.frame.size.height) {
                 let moveY = bottom + chatRoomTableView.contentOffset.y
                 chatRoomTableView.contentOffset = CGPoint(x: 0, y: moveY)
-            } else {
-
-            }
+            } 
             
         }
     }
@@ -195,7 +197,6 @@ extension ChatRoomViewController: ChatInputAccessoryViewDelegate {
 }
 
 extension ChatRoomViewController: ChatRoomModelDelegate {
-    
     // メッセージ情報の登録が失敗した時の処理
     func failedRegisterAction() {
         // アラートの表示

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Firebase
 
 class ChatListViewController: UIViewController {
     
@@ -99,7 +98,6 @@ extension ChatListViewController: UITableViewDelegate {
 }
 
 extension ChatListViewController: ChatListModelDelegate {
-        
     // LoginViewControllerへ画面遷移
     func presentToLoginVC() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Login", bundle: nil)
@@ -129,7 +127,6 @@ extension ChatListViewController: ChatListModelDelegate {
     // チャットルームの情報取得が完了した時の処理
     func completedChatRoomsInfoAction(chatRooms: [ChatRoom]) {
         self.chatRooms = chatRooms
-        print(chatRooms[0].partnerUser?.profileImageName ?? "")
         // chatListTableViewを更新
         self.chatListTableView.reloadData()
     }

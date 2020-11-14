@@ -18,16 +18,12 @@ extension UIViewController {
 
         let loadingView = UIView(frame: self.view.frame)
         loadingView.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.6)
-        
         // 他のViewと被らない値を代入
         loadingView.addSubview(loadingIndicator)
         self.view.addSubview(loadingView)
-         // overlayView.tag = 999
     }
-    
     // アクティビティインディケータのアニメーションを停止させるメソッド
     func dismissIndicator() {
         self.view.subviews.last?.removeFromSuperview()
-        // self.view.viewWithTag(999)?.removeFromSuperview()
     }
 }

@@ -44,7 +44,6 @@ class ChatInputAccessoryView: UIView {
         chatTextView.text = ""
         
         sendButton.isEnabled = false
-        
     }
     
     override var intrinsicContentSize: CGSize {
@@ -78,7 +77,7 @@ class ChatInputAccessoryView: UIView {
         chatTextView.text = ""
         sendButton.isEnabled = false
     }
-    
+        
     // 文章を送信する処理
     @IBAction func sendButtonAction(_ sender: Any) {
         guard let text = chatTextView.text else { return }
@@ -88,7 +87,6 @@ class ChatInputAccessoryView: UIView {
 }
 
 extension ChatInputAccessoryView: UITextViewDelegate {
-    
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.isEmpty {
             sendButton.isEnabled = false

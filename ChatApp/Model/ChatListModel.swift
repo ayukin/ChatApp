@@ -46,10 +46,9 @@ class ChatListModel {
         // ログインユーザーの情報をFirebaseFirestoreから取得する処理
         Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("ログインユーザー情報の取得に失敗しました。\(err)")
+                print(err)
                 return
             }
-            print("ログインユーザー情報の取得に成功しました。")
             guard let dic = snapshot?.data() else { return }
             // ログインユーザーの情報取得が完了した時の処理
             self.delegate?.completedLoginUserInfoAction(dic: dic)
@@ -60,7 +59,7 @@ class ChatListModel {
         // チャットルームの情報をFirebaseFirestoreから取得する処理（リアルタイム通信）
         Firestore.firestore().collection("chatRooms").addSnapshotListener { (snapshots, err) in
             if let err = err {
-                print("チャットルーム情報の取得に失敗しました。\(err)")
+                print(err)
                 return
             }
             // スナップショットの変更内容の種別（追加・更新・削除）を配列で取得する
@@ -92,10 +91,9 @@ class ChatListModel {
             if memberUid != uid {
                 Firestore.firestore().collection("users").document(memberUid).getDocument { (userSnapshot, err) in
                     if let err = err {
-                        print("ユーザー情報の取得に失敗しました。\(err)")
+                        print(err)
                         return
                     }
-                    print("ユーザー情報の取得に成功しました。")
                     guard let dic = userSnapshot?.data() else { return }
                     
                     let user = User.init(dic: dic)
@@ -115,7 +113,7 @@ class ChatListModel {
 
                     Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ?? "").getDocument { (messageSnapshot, err) in
                         if let err = err {
-                            print("最新メッセージ情報の取得に失敗しました。\(err)")
+                            print(err)
                             return
                         }
                         guard let dic = messageSnapshot?.data() else { return }
@@ -142,7 +140,7 @@ class ChatListModel {
 
         Firestore.firestore().collection("chatRooms").document(chatRoomId).collection("messages").document(laststMessageId ).getDocument { (messageSnapshot, err) in
             if let err = err {
-                print("最新メッセージ情報の取得に失敗しました。\(err)")
+                print(err)
                 return
             }
             guard let dic = messageSnapshot?.data() else { return }
